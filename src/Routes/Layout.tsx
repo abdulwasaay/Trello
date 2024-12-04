@@ -7,7 +7,7 @@ import Auth from "../Pages/auth/Auth";
 // import { useEffect } from "react"
 
 const RoutesLayout = () => {
-    const isAuth = false;
+    const isAuth = true;
     // const dispatch = useDispatch();
     // const { isAuth } = useSelector((state: any) => state.authSlice);
 

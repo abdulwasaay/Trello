@@ -3,6 +3,7 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router"
 import routeLinks from "./RouteLinks"
+import NavbarLatest from "../Components/Navbar/NavbarLatest"
 
 const ProtectedRoutes = ({ children, isAuth, hideNav, navArr }: { children: any, isAuth: boolean, hideNav: boolean, navArr: any }) => {
     console.log(navArr)
@@ -14,7 +15,7 @@ const ProtectedRoutes = ({ children, isAuth, hideNav, navArr }: { children: any,
     }, [isAuth])
 
     return <div className="">
-        {!hideNav && <h1>ds</h1>}
+        {!hideNav && <NavbarLatest />}
         <div className="" >
             {children}
         </div>
