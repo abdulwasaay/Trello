@@ -1,0 +1,21 @@
+.active div{
+background-color: #1C2B41;
+}
+
+.active div:hover{
+    background-color: #1C2B41;
+}
+
+.active div p{
+    color:#579DFF;
+}
+
+.active div img{
+    background-color: #579DFF;
+    filter: none;
+}
+
+.active div svg{
+    color:#579DFF;
+    filter: none;
+}

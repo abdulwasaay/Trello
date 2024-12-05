@@ -2,6 +2,8 @@ import { LoadingButton } from '@mui/lab';
 import React from "react"
 
 interface ButtonProps {
+    isCustomHover?: boolean;
+    disable?: boolean;
     text: String | any;
     styles?: any;
     loadings?: Boolean;
@@ -9,7 +11,7 @@ interface ButtonProps {
     onButtonClick: () => void;
 }
 
-const CustomButton: React.FC<ButtonProps> = ({ text, types = 'button', styles = {}, loadings = false, onButtonClick }) => {
+const CustomButton: React.FC<ButtonProps> = ({ isCustomHover = false, disable = false, text, types = 'button', styles = {}, loadings = false, onButtonClick }) => {
 
     const loading: any = loadings;
 
@@ -17,9 +19,18 @@ const CustomButton: React.FC<ButtonProps> = ({ text, types = 'button', styles = 
         <LoadingButton
             variant="contained"
             type={types}
-            style={{ ...styles, fontSize: "15px", textTransform: "capitalize" }}
+            style={{ fontSize: "15px", textTransform: "capitalize", ...styles }}
             loading={loading}
             onClick={onButtonClick}
+            className={`${isCustomHover && "hover:!bg-[#515164]"} `}
+            disabled={disable}
+            sx={{
+                "&.Mui-disabled": {
+                    background: "#424447",
+                    color: "white",
+                    opacity: "0.4"
+                }
+            }}
         >
 
             {text}

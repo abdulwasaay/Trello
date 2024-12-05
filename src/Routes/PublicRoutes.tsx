@@ -9,7 +9,7 @@ const PublicRoutes = ({ children, isAuth }: { children: any, isAuth: Boolean }) 
     const navigate = useNavigate()
     useEffect((): any => {
         if (isAuth) {
-            return navigate("/")
+            return navigate("/boards")
         }
     }, [isAuth])
 

@@ -1,0 +1,9 @@
+.backImgWorkStyle{
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    background-image: url(https://trello.com/assets/df0d819….svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}

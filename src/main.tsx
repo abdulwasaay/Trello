@@ -5,12 +5,15 @@ import './index.css'
 import App from './App.tsx'
 import { Provider } from 'react-redux'
 import store, { persistor } from './Redux/store.ts'
+import ModalContextProvider from './Contexts/ModalContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <App />
+        <ModalContextProvider>
+          <App />
+        </ModalContextProvider>
       </PersistGate>
     </Provider>
   </StrictMode>,

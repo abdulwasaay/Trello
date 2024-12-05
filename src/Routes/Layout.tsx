@@ -31,7 +31,8 @@ const RoutesLayout = () => {
 
 
     const navbarArr = [
-        { name: "Boards", link: true, path: routeLinks?.home, icon: "" },
+        { name: "Boards", link: true, path: routeLinks?.boards, icon: "" },
+        { name: "Home", link: true, path: routeLinks?.home, icon: "" },
     ]
 
 
