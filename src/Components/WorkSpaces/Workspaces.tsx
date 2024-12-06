@@ -6,6 +6,7 @@ import CustomButton from '../CustomButtonComp/CustomButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { useContext } from 'react';
 import { ModalContext } from '../../Contexts/ModalContext';
+import { basename } from '../../config/env';
 
 const style = {
     position: 'absolute',
@@ -107,7 +108,8 @@ export default function WorkSpaceModal({ onCloseHandler }: { onCloseHandler: () 
                             <CustomButton text={"Continue"} disable={true} onButtonClick={() => console.log("dsd")} styles={{ width: "100%", paddingTop: "10px", paddingBottom: "10px", backgroundColor: "#424447" }} />
                         </form>
                     </div>
-                    <div className='bg-blue-100 w-[50%] relative cursor-pointer'>
+                    <div className='bg-blue-100 w-[50%] relative flex items-center justify-center'>
+                        <img src={`${basename}assets/images/3dworkspace.png`} alt="3dworkspace" className='w-full'/>
                         <button className=' absolute top-3 right-3' onClick={onCloseHandler}><CloseIcon className=' text-[#aab5ca] cursor-pointer'/></button>
                     </div>
 

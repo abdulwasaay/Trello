@@ -1,4 +1,3 @@
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import BoardImagesComp from './BoardImagesComp';
 import { basename } from '../../config/env';
 import { ModalContext } from '../../Contexts/ModalContext';
@@ -23,10 +22,24 @@ const BoardsInner = () => {
             url: `${basename}assets/images/trelloDummy.png`
         }
     ]
+
+    const arrTwo = [
+        {
+            name: "WDS-Design",
+            url: `${basename}assets/images/trelloDummy.png`
+        }
+    ]
+
     return (
-        <div className="w-[910px] border mt-4">
+        <div className="w-[910px] mt-4">
             <div>
-                <div className='flex items-center gap-2 ml-1'><AccessTimeIcon style={{ color: "#aab5ca" }} /> <h1 className='text-[#aab5ca] text-xl font-medium'>Recently viewed</h1></div>
+                <h1 className='text-[#aab5ca] text-xl font-bold mt-6'>YOUR WORKSPACES</h1>
+                <div className=' flex mt-5'>
+                    <p className='text-[#aab5ca]  text-sm'>You aren't a member of any workspaces yet. </p>
+                    <button onClick={() => setIsOpen(true)} className='text-[#7070eb] font-medium ml-2 text-sm'>Create a workspace</button>
+                </div>
+                <div className='flex items-center gap-2 ml-1 mt-6'><h1 className='text-[#aab5ca] text-xl font-bold '>GUEST WORKSPACES</h1><InfoOutlinedIcon style={{ color: "#aab5ca" }} /></div>
+                <div className='flex items-center gap-2 ml-1 mt-5'><GroupOutlinedIcon style={{ color: "#aab5ca" }} /> <h1 className='text-[#cdd6e7] text-lg font-medium'>Production workspace</h1></div>
                 <div className='flex gap-5 mt-4'>
                     {
                         arr.map((ele: any, ind: number) => {
@@ -36,16 +49,11 @@ const BoardsInner = () => {
                         })
                     }
                 </div>
-                <h1 className='text-[#aab5ca] text-xl font-bold mt-6'>YOUR WORKSPACES</h1>
-                <div className=' flex mt-5'>
-                    <p className='text-[#aab5ca]  text-sm'>You aren't a member of any workspaces yet. </p>
-                    <button onClick={() => setIsOpen(true)} className='text-[#7070eb] font-medium ml-2 text-sm'>Create a workspace</button>
-                </div>
-                <div className='flex items-center gap-2 ml-1 mt-6'><h1 className='text-[#aab5ca] text-xl font-bold '>GUEST WORKSPACES</h1><InfoOutlinedIcon style={{ color: "#aab5ca" }} /></div>
-                <div className='flex items-center gap-2 ml-1 mt-5'><GroupOutlinedIcon style={{ color: "#aab5ca" }} /> <h1 className='text-[#cdd6e7] text-lg font-medium'>Recently viewed</h1></div>
+                <div className='flex items-center gap-2 ml-1 mt-14'><GroupOutlinedIcon style={{ color: "#aab5ca" }} /> <h1 className='text-[#cdd6e7] text-lg font-medium'>Pulse Digital
+                </h1></div>
                 <div className='flex gap-5 mt-4'>
                     {
-                        arr.map((ele: any, ind: number) => {
+                        arrTwo.map((ele: any, ind: number) => {
                             return (
                                 <BoardImagesComp key={ind} elements={ele} />
                             )
