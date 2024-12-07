@@ -23,15 +23,6 @@ const BoardImagesComp: React.FC<BoardImProps> = ({ elements }) => {
                         >
                             {elements?.name}
                         </h3>
-                        <button className="absolute bottom-1 right-1 hidden group-hover:block" >
-                            <StarBorderIcon
-                                style={{
-                                    fontSize: "18px",
-                                    color: "white",
-                                    fontWeight: "700",
-                                }}
-                            />
-                        </button>
                     </div>
                 </div>
             </div>

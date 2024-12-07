@@ -1,41 +1,64 @@
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { styled, alpha } from '@mui/material/styles';
 import Menu, { MenuProps } from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import EditIcon from '@mui/icons-material/Edit';
-import Divider from '@mui/material/Divider';
-import ArchiveIcon from '@mui/icons-material/Archive';
-import FileCopyIcon from '@mui/icons-material/FileCopy';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+
 import React from 'react';
 
-const HelpNavbar = () => {
+type MenuDropDownProps = {
+    mainRootStyles?: any;
+    anchorAlignMent?: any;
+    toggleIcon: any;
+    children: any;
+    transformAlignMent?: any;
+    listStyles?: any;
+}
+
+const MenuDropDown = ({
+    anchorAlignMent = {
+        vertical: 'bottom',
+        horizontal: 'left',
+    },
+    children,
+    toggleIcon,
+    transformAlignMent = {
+        vertical: 'top',
+        horizontal: 'left',
+    },
+    listStyles = {
+        padding: "20px"
+    },
+    mainRootStyles = {
+        borderRadius: 6,
+        minWidth: 180,
+        width: "400px",
+        color: 'white',
+        backgroundColor: "#292b30",
+        border: "1px solid #58595a",
+    }
+}: MenuDropDownProps) => {
 
     const StyledMenu = styled((props: MenuProps) => (
         <Menu
             elevation={0}
             anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
+                ...anchorAlignMent
             }}
             transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                ...transformAlignMent
             }}
             {...props}
         />
     ))(({ theme }) => ({
         '& .MuiPaper-root': {
             borderRadius: 6,
-            marginTop: theme.spacing(2),
             minWidth: 180,
-            width: "400px",
+            width: "460px",
             color: 'white',
-            marginRight:"0px",
-            backgroundColor:"#292b30",
-            border:"1px solid #58595a",
+            backgroundColor: "#292b30",
+            border: "1px solid #58595a",
+            marginTop: theme.spacing(2),
+            ...mainRootStyles,
             '& .MuiMenu-list': {
-                padding: '20px',
+                ...listStyles
             },
             '& .MuiMenuItem-root': {
                 '& .MuiSvgIcon-root': {
@@ -68,7 +91,7 @@ const HelpNavbar = () => {
     return (
         <div>
             <button onClick={handleClick}>
-                <HelpOutlineIcon className="text-[#aab5ca]" />
+                {toggleIcon}
             </button>
             {
                 <StyledMenu
@@ -80,13 +103,11 @@ const HelpNavbar = () => {
                     open={open}
                     onClose={handleClose}
                 >
-                    <div>
-                        img
-                    </div>
+                    {children}
                 </StyledMenu>
             }
         </div>
     )
 }
 
-export default HelpNavbar
+export default MenuDropDown
