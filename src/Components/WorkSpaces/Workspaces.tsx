@@ -19,8 +19,12 @@ const style = {
     display: "flex",
 };
 
-export default function WorkSpaceModal({ onCloseHandler }: { onCloseHandler: () => void }) {
-    const { isOpen } = useContext(ModalContext);
+export default function WorkSpaceModal() {
+    const { isOpen, setIsOpen } = useContext(ModalContext);
+
+    const onCloseHandler = () => {
+        setIsOpen(false)
+    }
 
     return (
         <div>
@@ -109,8 +113,8 @@ export default function WorkSpaceModal({ onCloseHandler }: { onCloseHandler: () 
                         </form>
                     </div>
                     <div className='bg-blue-100 w-[50%] relative flex items-center justify-center'>
-                        <img src={`${basename}assets/images/3dworkspace.png`} alt="3dworkspace" className='w-full'/>
-                        <button className=' absolute top-3 right-3' onClick={onCloseHandler}><CloseIcon className=' text-[#aab5ca] cursor-pointer'/></button>
+                        <img src={`${basename}assets/images/3dworkspace.png`} alt="3dworkspace" className='w-full' />
+                        <button className=' absolute top-3 right-3' onClick={onCloseHandler}><CloseIcon className=' text-[#aab5ca] cursor-pointer' /></button>
                     </div>
 
                 </Box>

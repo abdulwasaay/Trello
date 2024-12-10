@@ -1,3 +1,4 @@
+import BoardDynamicLayout from "../Pages/BoardDynamicLayout";
 import BoardLayout from "../Pages/BoardLayout";
 import HomeLayout from "../Pages/HomePage";
 import routeLinks from "./RouteLinks";
@@ -11,6 +12,11 @@ const privateRoutes = [
     {
         comp: BoardLayout,
         routeLink: routeLinks?.boards,
+        isHideNav: false,
+    },
+    {
+        comp: BoardDynamicLayout,
+        routeLink: routeLinks?.dynamicBoard,
         isHideNav: false,
     }
 ]

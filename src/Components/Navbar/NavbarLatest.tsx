@@ -1,15 +1,20 @@
-import { Link } from "react-router";
-import CustomButton from "../CustomButtonComp/CustomButton";
+import { useNavigate } from "react-router";
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { basename } from "../../config/env";
 import InputWithDropdown from "../InputFields/InputWithDropDown";
 import WebIcon from '@mui/icons-material/Web';
 import MenuDropDown from "../DropDownMenuButtons/menuDropdown";
 import notificationsDummy from "../../dummydata";
 import Notificationss from "../NotificationsComps/Notifications";
+import CreateBoardLatest from "../Boards/CreateBoardComp";
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
+import { ModalContext } from "../../Contexts/ModalContext";
 
 const NavbarLatest = () => {
+    const navigate = useNavigate();
+    const { setIsOpen } = useContext(ModalContext);
     const [hovered, setHovered] = useState(false);
     const [focused, setFocused] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
@@ -34,6 +39,11 @@ const NavbarLatest = () => {
             ]
         }
     ]);
+
+    const workobs = [
+        { workName: "Production workspace" },
+        { workName: "Pulse Digital" },
+    ]
 
     const imgSource = hovered ? "https://trello.com/assets/87e1af770a49ce8e84e3.gif" : "https://trello.com/assets/d947df93bc055849898e.gif";
 
@@ -106,19 +116,48 @@ const NavbarLatest = () => {
         })
     }
 
-
     return (
         <nav className=" border-b-[1px] border-b-[#58595a] pt-3 pb-3 pl-6 pr-3 flex justify-between items-center">
             <div className="flex items-center gap-10">
-                <Link
-                    to={"/"}
-                    className="pl-3 pr-3 pt-2 pb-2 rounded-sm hover:bg-[#363636]"
-                    onMouseEnter={() => setHovered(true)}
-                    onMouseLeave={() => setHovered(false)}
+                <img src={imgSource} alt="imgsource" className="w-[80px] opacity-60 cursor-pointer" onMouseEnter={() => setHovered(true)}
+                    onMouseLeave={() => setHovered(false)} onClick={() => navigate("/")} />
+                <MenuDropDown
+                    mainRootStyles={{ maxHeight: "51vh", width: "300px" }}
+                    listStyles={{ padding: "0" }}
+                    toggleIcon={<span className="flex items-center gap-1">Workspaces <KeyboardArrowDownIcon /></span>}
+                    customButtStyles={{ fontWeight: "500", color: "#aab5ca", borderRadius: "3px", padding: "5px 10px" }}
+                    customButtClasses=" hover:bg-[#37393f] bg-none outline-none"
                 >
-                    <img src={imgSource} alt="imgsource" className="w-20 opacity-60" />
-                </Link>
-                <CustomButton text={"Create"} onButtonClick={() => console.log("Create clicked")} styles={{ fontWeight: "bold" }} />
+                    <div className="pb-6">
+                        <button className="text-start hover:bg-[#37393f] p-4" onClick={() => setIsOpen(true)}>
+                            <h4 className="font-normal text-[#cad1df] text-md flex items-center gap-3"><span><GroupOutlinedIcon /></span> Create Workspace</h4>
+                            <p className="text-[#aab5ca] font-normal text-sm pt-1">A Workspace is a group of boards and people. Use it to organize your company, side hustle, family, or friends.</p>
+                        </button>
+                        <div className="pl-4 pr-4">
+                            <p className="text-[#aab5ca] font-medium text-md mt-3 mb-5">Guest Workspaces</p>
+                            <div className=" flex flex-col gap-5">
+                                {
+                                    workobs?.map((works: any) => {
+                                        return (
+                                            <div className="flex gap-4 items-center">
+                                                <div className="w-14 h-14 flex justify-center items-center bg-slate-600 rounded-md text-3xl font-medium">{works?.workName.charAt(0)}</div>
+                                                <p className="text-[#aab5ca] text-md font-medium">{works?.workName}</p>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </MenuDropDown>
+                <MenuDropDown
+                    mainRootStyles={{ maxHeight: "67vh", width: "350px" }}
+                    listStyles={{ padding: "10px" }}
+                    toggleIcon={"Create"}
+                    customButtStyles={{ fontWeight: "500", color: "white", backgroundColor: "#3f51b5", borderRadius: "3px", padding: "5px 10px", zIndex: "3", position: "relative" }}
+                >
+                    <CreateBoardLatest />
+                </MenuDropDown>
             </div>
             <div className="flex items-center justify-end gap-3 w-full">
                 <InputWithDropdown
@@ -155,7 +194,7 @@ const NavbarLatest = () => {
                 </InputWithDropdown>
                 <MenuDropDown
                     toggleIcon={<NotificationsIcon className="rotate-45 text-[#aab5ca]" />}
-                    mainRootStyles={{maxHeight:"80vh" }}
+                    mainRootStyles={{ maxHeight: "80vh" }}
                 >
                     <div className="  pr-[40px]">
                         <h1 className="text-xl text-[#aab5ca] font-medium border-b-[1px] border-b-[#58595a] pb-4">Notifications</h1>
@@ -164,7 +203,7 @@ const NavbarLatest = () => {
                                 notificationsDummy.map((not: any) => {
                                     return (
                                         <Notificationss
-                                        cardContent = {not}
+                                            cardContent={not}
                                         />
                                     )
                                 })
