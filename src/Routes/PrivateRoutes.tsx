@@ -4,8 +4,9 @@ import { useEffect } from "react"
 import { useNavigate } from "react-router"
 import routeLinks from "./RouteLinks"
 import NavbarLatest from "../Components/Navbar/NavbarLatest"
+import WorkSpaceModal from "../Components/WorkSpaces/Workspaces"
 
-const ProtectedRoutes = ({ children, isAuth,  hideNav, navArr }: { children: any, isAuth: boolean, hideNav: boolean, navArr: any }) => {
+const ProtectedRoutes = ({ children, isAuth, hideNav, navArr }: { children: any, isAuth: boolean, hideNav: boolean, navArr: any }) => {
     console.log(navArr)
     const navigate = useNavigate()
     useEffect((): any => {
@@ -14,9 +15,10 @@ const ProtectedRoutes = ({ children, isAuth,  hideNav, navArr }: { children: any
         }
     }, [isAuth])
 
-    return <div className=" relative">
+    return <div className="w-full h-full">
         {!hideNav && <NavbarLatest tabs={navArr}/>}
-        <div className="" >
+        <WorkSpaceModal />
+        <div className=" w-full h-full" >
             {children}
         </div>
     </div>

@@ -10,6 +10,9 @@ type MenuDropDownProps = {
     children: any;
     transformAlignMent?: any;
     listStyles?: any;
+    cancelFunction?: (e: () => void) => void;
+    customButtStyles?: any;
+    customButtClasses?: string;
 }
 
 const MenuDropDown = ({
@@ -17,7 +20,10 @@ const MenuDropDown = ({
         vertical: 'bottom',
         horizontal: 'left',
     },
+    cancelFunction = (e) => e,
     children,
+    customButtClasses = "",
+    customButtStyles = {},
     toggleIcon,
     transformAlignMent = {
         vertical: 'top',
@@ -33,7 +39,7 @@ const MenuDropDown = ({
         color: 'white',
         backgroundColor: "#292b30",
         border: "1px solid #58595a",
-    }
+    },
 }: MenuDropDownProps) => {
 
     const StyledMenu = styled((props: MenuProps) => (
@@ -88,9 +94,11 @@ const MenuDropDown = ({
         setAnchorEl(null);
     };
 
+    cancelFunction(handleClose)
+
     return (
         <div>
-            <button onClick={handleClick}>
+            <button onClick={handleClick} style={customButtStyles} className={customButtClasses}>
                 {toggleIcon}
             </button>
             {

@@ -6,7 +6,6 @@ import { basename } from "../../config/env"
 import CustomButton from "../CustomButtonComp/CustomButton"
 import HomeIcon from '@mui/icons-material/Home';
 import "./NavStyle.css"
-import WorkSpaceModal from "../WorkSpaces/Workspaces";
 import { useContext } from "react";
 import { ModalContext } from "../../Contexts/ModalContext";
 
@@ -22,8 +21,6 @@ import { ModalContext } from "../../Contexts/ModalContext";
 
 const BoardsBar = () => {
     const { setIsOpen } = useContext(ModalContext);
-
-    const handleClose = () => setIsOpen(false);
 
     return (
         <div className="">
@@ -47,7 +44,6 @@ const BoardsBar = () => {
                     <CustomButton text="+ Create a Workspace" isCustomHover onButtonClick={() => setIsOpen(true)} styles={{ background: "none", color: "#aab5ca", fontSize: "13px", paddingLeft: "15px", justifyContent: "left", textTransform: "none", marginTop: "10px", boxShadow: "none" }} />
                 </div>
             </div>
-            <WorkSpaceModal  onCloseHandler={handleClose} />
         </div>
     )
 }
