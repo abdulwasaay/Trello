@@ -9,7 +9,7 @@ import MenuDropDown from "../DropDownMenuButtons/menuDropdown";
 import notificationsDummy from "../../dummydata";
 import Notificationss from "../NotificationsComps/Notifications";
 
-const NavbarLatest = () => {
+const NavbarLatest = ({ tabs }: any) => {
     const [hovered, setHovered] = useState(false);
     const [focused, setFocused] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
@@ -75,13 +75,19 @@ const NavbarLatest = () => {
     }
 
     const searchFunctionality: any = (searchData: any) => {
-        return searchData.map((data: any, ind: number) => {
-            const dataArrray: any = data.arr.filter((result: any) => result.title.includes(searchQuery.toLowerCase()))
+        const filteredData = searchData?.map((section: any) => ({
+            ...section,
+            arr: section?.arr?.filter((item: any) =>
+                item?.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                item?.description.toLowerCase().includes(searchQuery.toLowerCase())
+            )
+        })).filter((section: any) => section?.arr?.length > 0);
+        return filteredData?.map((data: any, ind: number) => {
             return (
                 <div key={ind}>
                     <p className="text-sm font-normal mb-2 text-[#aab5ca] ml-5">{data?.mainTitle.toUpperCase()}</p>
                     {
-                        dataArrray.map((results: any, ind: number) => {
+                        data?.arr?.map((results: any, ind: number) => {
                             return (
                                 <div
                                     key={ind}
@@ -93,8 +99,8 @@ const NavbarLatest = () => {
                                         className="w-8 h-8 opacity-60 rounded-sm"
                                     />
                                     <div>
-                                        <h3 className="font-medium text-[#cad1df]">{results.title}</h3>
-                                        <p className="text-sm text-[#aab5ca]">{results.description}</p>
+                                        <h3 className="font-medium text-[#cad1df]">{results?.title}</h3>
+                                        <p className="text-sm text-[#aab5ca]">{results?.description}</p>
                                     </div>
                                 </div>
                             )
@@ -108,7 +114,7 @@ const NavbarLatest = () => {
 
 
     return (
-        <nav className=" border-b-[1px] border-b-[#58595a] pt-3 pb-3 pl-6 pr-3 flex justify-between items-center">
+        <nav className="  border-b-[1px] border-b-[#58595a] bg-[#1D2125] pt-3 pb-3 pl-6 pr-3 flex justify-between items-center fixed top-0 w-full" style={{zIndex:"3"}}>
             <div className="flex items-center gap-10">
                 <Link
                     to={"/"}
@@ -155,16 +161,16 @@ const NavbarLatest = () => {
                 </InputWithDropdown>
                 <MenuDropDown
                     toggleIcon={<NotificationsIcon className="rotate-45 text-[#aab5ca]" />}
-                    mainRootStyles={{maxHeight:"80vh" }}
+                    mainRootStyles={{ maxHeight: "80vh" }}
                 >
-                    <div className="  pr-[40px]">
+                    <div className="  pr-[20px]">
                         <h1 className="text-xl text-[#aab5ca] font-medium border-b-[1px] border-b-[#58595a] pb-4">Notifications</h1>
                         <div>
                             {
                                 notificationsDummy.map((not: any) => {
                                     return (
                                         <Notificationss
-                                        cardContent = {not}
+                                            cardContent={not}
                                         />
                                     )
                                 })
@@ -173,7 +179,37 @@ const NavbarLatest = () => {
                     </div>
                 </MenuDropDown>
                 {/* <HelpOutlineIcon className="text-[#aab5ca]" /> */}
-                <p className="bg-[blue] text-[11px] font-bold w-6 h-6 flex justify-center items-center rounded-full">D</p>
+                <MenuDropDown
+                    toggleIcon={<p className="bg-[blue] text-[11px] font-bold w-6 h-6 flex justify-center items-center rounded-full">D</p>}
+                    mainRootStyles={{ maxHeight: "80vh", width: "300px" }}
+                >
+                    <div className="">
+                        <div className="flex items-center gap-3 border-b-[1px] border-b-[#58595a] pb-4">
+                            <p className="bg-[blue] text-[11px] font-bold w-10 h-10 flex justify-center items-center rounded-full">D</p>
+                            <div className="">
+                                <p className="text-[#aab5ca] text-md font-medium">Test User</p>
+                                <p className="text-[#80858f] font-medium text-[13px]">example@gmail.com</p>
+                            </div>
+                        </div>
+                        <div className="mt-3">
+                            {
+                                tabs?.map((tab: any) => {
+                                    if (tab?.link) {
+                                        return (
+                                            <Link to={tab?.path}>
+                                                <span><NotificationsIcon className="rotate-45 text-[#aab5ca]" /></span>  {tab?.name}
+                                            </Link>
+                                        )
+                                    } else {
+                                        return (
+                                            <button onClick={tab?.clickFunc} className=" flex items-center gap-3 hover:bg-[#515164] text-md text-[#d9e2f3] rounded-md w-full p-2 font-medium">{tab?.icon} {tab?.name}</button>
+                                        )
+                                    }
+                                })
+                            }
+                        </div>
+                    </div>
+                </MenuDropDown>
             </div>
         </nav>
     );

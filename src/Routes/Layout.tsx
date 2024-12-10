@@ -1,10 +1,10 @@
 import { Route, Routes } from "react-router";
-import routeLinks from "./RouteLinks";
 import privateRoutes from "./Routes"
 import ProtectedRoutes from "./PrivateRoutes";
 import NotFound from "../Components/ErrorPages/NotFound";
 import Auth from "../Pages/auth/Auth";
 // import { useEffect } from "react"
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const RoutesLayout = () => {
     const isAuth = true;
@@ -31,8 +31,7 @@ const RoutesLayout = () => {
 
 
     const navbarArr = [
-        { name: "Boards", link: true, path: routeLinks?.boards, icon: "" },
-        { name: "Home", link: true, path: routeLinks?.home, icon: "" },
+        { name: "Log out", link: false, clickFunc: () => console.log("s"), icon: <LogoutIcon className="text-[#d9e2f3]" style={{ fontSize: "20px" }} /> },
     ]
 
 

@@ -14,8 +14,8 @@ const ProtectedRoutes = ({ children, isAuth,  hideNav, navArr }: { children: any
         }
     }, [isAuth])
 
-    return <div className="">
-        {!hideNav && <NavbarLatest />}
+    return <div className=" relative">
+        {!hideNav && <NavbarLatest tabs={navArr}/>}
         <div className="" >
             {children}
         </div>

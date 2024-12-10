@@ -3,7 +3,7 @@ import BoardsBar from "../Components/Navbar/BoardsBar"
 
 const HomeLayout = () => {
     return (
-        <div className="flex justify-center mt-10 gap-10">
+        <div className="flex justify-center pt-28 gap-10 relative" style={{zIndex:"1"}}>
             <BoardsBar />
             <HomeComp />
         </div>
