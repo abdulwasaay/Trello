@@ -7,7 +7,7 @@ import Auth from "../Pages/auth/Auth";
 import LogoutIcon from '@mui/icons-material/Logout';
 
 const RoutesLayout = () => {
-    const isAuth = true;
+    const isAuth = false;
     // const dispatch = useDispatch();
     // const { isAuth } = useSelector((state: any) => state.authSlice);
 

@@ -58,7 +58,7 @@ const CreateBoardLatest = () => {
 
     return (
         <div>
-            <div className="flex flex-col pb-3">
+            <div className="flex flex-col pb-3 pl-[10px] pr-[10px]">
                 <div className=" flex justify-center items-center">
                     <h3 className="font-medium text-[#cad1df] text-md mt-1">Create Board</h3>
                 </div>

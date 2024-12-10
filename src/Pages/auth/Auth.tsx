@@ -6,7 +6,7 @@ import routeLinks from "../../Routes/RouteLinks"
 import LoginComp from "../../Components/LoginComp/Login"
 
 const Auth = () => {
-    const isAuth = true;
+    const isAuth = false;
 
     return (
         <Routes>
