@@ -1,0 +1,7 @@
+.draggable {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.draggable.dragging {
+    opacity: 0.2; /* Optional to enhance the effect */
+}

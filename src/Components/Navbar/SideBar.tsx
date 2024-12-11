@@ -24,8 +24,8 @@ const SideBarLatest = () => {
     }
 
     return (
-        <div className="text-white bg-[#1D2125] opacity-90 sticky" style={{ width: isClose ? "30px" : "270px", transition: "0.3s ease" }}>
-            <button className='flex justify-center items-center p-[2px] mt-6 rounded-full bg-[#37393f] border-[1px] border-[#58595a] absolute left-4' style={{ display: hiddenStyleButton }} onClick={() => sideBartransition(false)}><KeyboardArrowLeftIcon /></button>
+        <div className="text-white bg-[#1D2125] opacity-90 sticky" style={{ width: isClose ? "30px" : "270px", transition: "0.3s ease" , zIndex:3 }}>
+            <button className='flex justify-center items-center p-[2px] mt-6 rounded-full bg-[#37393f] border-[1px] border-[#58595a] relative left-4' style={{ display: hiddenStyleButton}} onClick={() => sideBartransition(false)}><KeyboardArrowLeftIcon /></button>
             <div style={{ display: hiddenStyle }}>
                 <div className="flex justify-between items-center pt-3 pb-3 pl-4 pr-4 border-b-[1px] border-b-[#58595a]" >
                     <div className="flex gap-4 items-center">
