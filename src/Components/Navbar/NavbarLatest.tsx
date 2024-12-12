@@ -12,7 +12,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import { ModalContext } from "../../Contexts/ModalContext";
 
-const NavbarLatest = ({tabs}: {tabs:any}) => {
+const NavbarLatest = ({ tabs }: { tabs: any }) => {
     const navigate = useNavigate();
     const { setIsOpen } = useContext(ModalContext);
     const [hovered, setHovered] = useState(false);
@@ -123,7 +123,7 @@ const NavbarLatest = ({tabs}: {tabs:any}) => {
     }
 
     return (
-        <nav className="  border-b-[1px] border-b-[#58595a] bg-[#1D2125] pt-3 pb-3 pl-6 pr-3 flex justify-between items-center fixed top-0 w-full" style={{zIndex:"3"}}>
+        <nav className="  border-b-[1px] border-b-[#58595a] bg-[#1D2125] pt-3 pb-3 pl-6 pr-3 flex justify-between items-center fixed top-0 w-full" style={{ zIndex: "3" }}>
             <div className="flex items-center gap-10">
                 <img src={imgSource} alt="imgsource" className="w-[80px] opacity-60 cursor-pointer" onMouseEnter={() => setHovered(true)}
                     onMouseLeave={() => setHovered(false)} onClick={() => navigate("/")} />
@@ -143,9 +143,9 @@ const NavbarLatest = ({tabs}: {tabs:any}) => {
                             <p className="text-[#aab5ca] font-medium text-md mt-3 mb-5">Guest Workspaces</p>
                             <div className=" flex flex-col gap-5">
                                 {
-                                    workobs?.map((works: any) => {
+                                    workobs?.map((works: any , ind:number) => {
                                         return (
-                                            <div className="flex gap-4 items-center">
+                                            <div className="flex gap-4 items-center" key={ind}>
                                                 <div className="w-14 h-14 flex justify-center items-center bg-slate-600 rounded-md text-3xl font-medium">{works?.workName.charAt(0)}</div>
                                                 <p className="text-[#aab5ca] text-md font-medium">{works?.workName}</p>
                                             </div>
@@ -158,7 +158,7 @@ const NavbarLatest = ({tabs}: {tabs:any}) => {
                 </MenuDropDown>
                 <MenuDropDown
                     mainRootStyles={{ maxHeight: "67vh", width: "350px" }}
-                    listStyles={{ paddingTop: "10px" , paddingBottom:"10px" }}
+                    listStyles={{ paddingTop: "10px", paddingBottom: "10px" }}
                     toggleIcon={"Create"}
                     customButtStyles={{ fontWeight: "500", color: "white", backgroundColor: "#3f51b5", borderRadius: "3px", padding: "5px 10px", zIndex: "3", position: "relative" }}
                 >
@@ -206,9 +206,10 @@ const NavbarLatest = ({tabs}: {tabs:any}) => {
                         <h1 className="text-xl text-[#aab5ca] font-medium border-b-[1px] border-b-[#58595a] pb-4">Notifications</h1>
                         <div>
                             {
-                                notificationsDummy.map((not: any) => {
+                                notificationsDummy.map((not: any, ind: number) => {
                                     return (
                                         <Notificationss
+                                            key={ind}
                                             cardContent={not}
                                         />
                                     )
@@ -232,16 +233,16 @@ const NavbarLatest = ({tabs}: {tabs:any}) => {
                         </div>
                         <div className="mt-3">
                             {
-                                tabs?.map((tab: any) => {
+                                tabs?.map((tab: any, ind: number) => {
                                     if (tab?.link) {
                                         return (
-                                            <Link to={tab?.path}>
+                                            <Link to={tab?.path} key={ind}>
                                                 <span><NotificationsIcon className="rotate-45 text-[#aab5ca]" /></span>  {tab?.name}
                                             </Link>
                                         )
                                     } else {
                                         return (
-                                            <button onClick={tab?.clickFunc} className=" flex items-center gap-3 hover:bg-[#515164] text-md text-[#d9e2f3] rounded-md w-full p-2 font-medium">{tab?.icon} {tab?.name}</button>
+                                            <button key={ind} onClick={tab?.clickFunc} className=" flex items-center gap-3 hover:bg-[#515164] text-md text-[#d9e2f3] rounded-md w-full p-2 font-medium">{tab?.icon} {tab?.name}</button>
                                         )
                                     }
                                 })

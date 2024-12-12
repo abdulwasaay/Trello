@@ -8,7 +8,7 @@ interface ButtonProps {
     styles?: any;
     loadings?: Boolean;
     types?: any;
-    onButtonClick: () => void;
+    onButtonClick: (e?:any) => void;
 }
 
 const CustomButton: React.FC<ButtonProps> = ({ isCustomHover = false, disable = false, text, types = 'button', styles = {}, loadings = false, onButtonClick }) => {
