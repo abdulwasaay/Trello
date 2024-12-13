@@ -38,10 +38,6 @@ const BoardsListsLatest = () => {
         }
     }, [listInput]);
 
-    useEffect(()=>{
-        console.log(taskLists , "len")
-    })
-
     const closeListMenu = (e: any) => {
         if (addListRef.current && !addListRef.current.contains(e.target)) {
             setIsMakeList(false)
@@ -78,12 +74,12 @@ const BoardsListsLatest = () => {
 
         setTaskLists(updatedTaskLists); // Save the state
         setDraggingIndex(null); // Clear dragging state
-  
+
     };
 
     const handleDragEnd = () => {
         setDraggingIndex(null); // Clear dragging state on drag end
-     
+
     };
 
     const updateTaskList = (index: number, name: string) => {

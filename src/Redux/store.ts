@@ -8,13 +8,8 @@ import { thunk } from "redux-thunk";
 const persistConfig = {
     key: 'root',
     storage,
-    blacklist : [
-        "signupSlice",
+    blacklist: [
         "loginSlice",
-        "forgotSlice",
-        "OTPSlice",
-        "VerifyOTPSlice",
-        "ResetSlice",
     ]
 };
 

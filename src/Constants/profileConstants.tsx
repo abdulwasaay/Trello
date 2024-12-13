@@ -1,30 +1,30 @@
-const profileColors:any = {
-    A: "#FF0000",  // Red
-    B: "#FF7F00",  // Orange
-    C: "#FF7F00",  // Orange
-    D: "#7FFF00",  // Chartreuse
-    E: "#00FF00",  // Green
-    F: "#00FF7F",  // Spring Green
-    G: "#00FFFF",  // Cyan
-    H: "#007FFF",  // Azure
-    I: "#0000FF",  // Blue
-    J: "#7F00FF",  // Violet
-    K: "#FF00FF",  // Magenta
-    L: "#FF007F",  // Rose
-    M: "#800000",  // Maroon
-    N: "#FF4500",  // OrangeRed
-    O: "#FFD700",  // Gold
-    P: "#808000",  // Olive
-    Q: "#008080",  // Teal
-    R: "#800080",  // Purple
-    S: "#FF1493",  // DeepPink
-    T: "#696969",  // DimGray
-    U: "#000080",  // Navy
-    V: "#8A2BE2",  // BlueViolet
-    W: "#A52A2A",  // Brown
-    X: "#5F9EA0",  // CadetBlue
-    Y: "#9ACD32",  // YellowGreen
-    Z: "#556B2F"   // DarkOliveGreen
+const profileColors: any = {
+    A: { bg: "#FF0000", tx: "#FFF" },  // Red
+    B: { bg: "#FF7F00", tx: "#FFF" },  // Orange
+    C: { bg: "#FF7F00", tx: "#FFF" },  // Orange
+    D: { bg: "#7FFF00", tx: "#000F" },  // Chartreuse
+    E: { bg: "#00FF00", tx: "#000F" },  // Green
+    F: { bg: "#00FF7F", tx: "#000F" },  // Spring Green
+    G: { bg: "#00FFFF", tx: "#000F" },  // Cyan
+    H: { bg: "#007FFF", tx: "#FFF" },  // Azure
+    I: { bg: "#0000FF", tx: "#FFF" },  // Blue
+    J: { bg: "#7F00FF", tx: "#FFF" },  // Violet
+    K: { bg: "#FF00FF", tx: "#000F" },  // Magenta
+    L: { bg: "#FF007F", tx: "#FFF" },  // Rose
+    M: { bg: "#800000", tx: "#FFF" },  // Maroon
+    N: { bg: "#FF4500", tx: "#FFF" },  // OrangeRed
+    O: { bg: "#FFD700", tx: "#000F" },  // Gold
+    P: { bg: "#808000", tx: "#FFF" },  // Olive
+    Q: { bg: "#008080", tx: "#FFF" },  // Teal
+    R: { bg: "#800080", tx: "#FFF" },  // Purple
+    S: { bg: "#FF1493", tx: "#FFF" },  // DeepPink
+    T: { bg: "#696969", tx: "#FFF" },  // DimGray
+    U: { bg: "#000080", tx: "#FFF" },  // Navy
+    V: { bg: "#8A2BE2", tx: "#FFF" },  // BlueViolet
+    W: { bg: "#A52A2A", tx: "#FFF" },  // Brown
+    X: { bg: "#5F9EA0", tx: "#FFF" },  // CadetBlue
+    Y: { bg: "#9ACD32", tx: "#000F" },  // YellowGreen
+    Z: { bg: "#556B2F", tx: "#FFF" }   // DarkOliveGreen
 };
 
 export default profileColors

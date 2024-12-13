@@ -8,7 +8,7 @@ interface ButtonProps {
     styles?: any;
     loadings?: Boolean;
     types?: any;
-    onButtonClick: (e?:any) => void;
+    onButtonClick: (e?: any) => void;
 }
 
 const CustomButton: React.FC<ButtonProps> = ({ isCustomHover = false, disable = false, text, types = 'button', styles = {}, loadings = false, onButtonClick }) => {
@@ -26,9 +26,9 @@ const CustomButton: React.FC<ButtonProps> = ({ isCustomHover = false, disable = 
             disabled={disable}
             sx={{
                 "&.Mui-disabled": {
-                    background: "#424447",
-                    color: "white",
-                    opacity: "0.4"
+                    background: loading ? "" : "#424447",
+                    color: loading ? "" : "white",
+                    opacity: loading ? "" : "0.4"
                 }
             }}
         >

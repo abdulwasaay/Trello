@@ -1,11 +1,20 @@
-import { useRef } from "react";
+import React, { useRef } from "react";
 import CustomButton from "../CustomButtonComp/CustomButton"
 import TextInputField from "../InputFields/TextInputField"
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import HidePassHandler from "../../Utils/hidePassHandler";
 import { basename } from "../../config/env";
+import { useFormik } from "formik";
+import * as Yup from 'yup';
+import { useSelector } from "react-redux";
 
-const LoginComp = () => {
+interface loginComponentProps {
+    submitHandler: (formData: any) => void
+}
+
+const LoginComp: React.FC<loginComponentProps> = ({ submitHandler }) => {
+    const { isLoading } = useSelector((state: any) => state.loginSlice);
+    console.log(isLoading)
 
     const eyeVisibilityRef = useRef<any>(null);
 
@@ -35,9 +44,35 @@ const LoginComp = () => {
         paddingBottom: "10px",
     }
 
+    const loginSchema: any = Yup.object().shape({
+        email: Yup.string().required('Email is required'),
+        password: Yup.string().required("Password is required")
+    });
+
+    const loginFormik: any = useFormik({
+        enableReinitialize: true,
+        initialValues: {
+            email: "",
+            password: ""
+        },
+        onSubmit: (values) => {
+            const formData = new FormData();
+            formData.append('email', values?.email);
+            formData.append('password', values?.password);
+            submitHandler(formData)
+        }
+        ,
+        validationSchema: loginSchema
+    })
+
+    const handleSubmit = (e: any) => {
+        e.preventDefault();
+        loginFormik.submitForm();
+    }
+
     return (
         <div className="w-full h-full relative bg-[#fcfcfc]">
-            <img src={`${basename}assets/images/loginscreen1.PNG`} alt="loginscreen1"  className="absolute bottom-0"/>
+            <img src={`${basename}assets/images/loginscreen1.PNG`} alt="loginscreen1" className="absolute bottom-0" />
             <div className="w-full h-[100vh] overflow-x-hidden flex flex-col justify-center pl-4 pr-4 border">
                 <div className="w-[400px] border bg-white p-7 text-[#42526E] box-border rounded-sm max-[435px]:pl-5 max-[435px]:pr-5" style={{ boxShadow: "rgba(0, 0, 0, 0.1) 0px 0px 10px", margin: "0px auto" }}>
                     <div className="flex gap-1 justify-center items-center">
@@ -45,11 +80,12 @@ const LoginComp = () => {
                         <h1 className="text-3xl font-bold">Trello</h1>
                     </div>
                     <p className=" text-md font-medium text-center mt-5 max-[435px]:mt-2">Log in to continue</p>
-                    <form className="mt-4 flex flex-col gap-3">
+                    <form className="mt-4 flex flex-col gap-3" onSubmit={handleSubmit}>
                         <TextInputField
                             types="email"
                             name="email"
                             placeHolder="Enter your email"
+                            formik={loginFormik}
                         />
                         <div className=" relative">
                             <TextInputField
@@ -58,6 +94,7 @@ const LoginComp = () => {
                                 placeHolder="Enter your Password"
                                 styles={{ paddingRight: "37px" }}
                                 ref={eyeVisibilityRef}
+                                formik={loginFormik}
                             />
                             <button type="button" className="absolute top-2 right-2" onClick={showVisibility}>
                                 <RemoveRedEyeIcon />
@@ -68,27 +105,14 @@ const LoginComp = () => {
                             onButtonClick={() => console.log("submitted")}
                             styles={{ width: "100%" }}
                             types={"submit"}
+                            loadings={isLoading}
                         />
                     </form>
 
-                    <p className="text-[rgb(94, 108, 132)] text-md font-medium mt-6 text-center">Or continue with:</p>
 
-                    <div className="flex flex-col gap-4 mt-4 pb-7" style={{ borderBottom: "1px solid rgb(193, 199, 208)" }}>
-                        {
-                            providerArr?.map((prov: any, ind: number) => {
-                                return (
-                                    <CustomButton
-                                        key={ind}
-                                        text={<span className="flex items-center gap-3"><img src={prov?.url} alt={prov?.alt} className="w-6" />{prov?.name}</span>}
-                                        onButtonClick={() => console.log("ds")}
-                                        styles={customLoginStyles} />
-                                )
-                            })
-                        }
-                    </div>
                 </div>
             </div>
-            <img src={`${basename}assets/images/loginscreen2.PNG`} alt="loginscreen1"  className="absolute bottom-0 right-0"/>
+            <img src={`${basename}assets/images/loginscreen2.PNG`} alt="loginscreen1" className="absolute bottom-0 right-0" />
         </div>
 
     )

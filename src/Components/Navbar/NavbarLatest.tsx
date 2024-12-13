@@ -11,10 +11,16 @@ import CreateBoardLatest from "../Boards/CreateBoardComp";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import { ModalContext } from "../../Contexts/ModalContext";
+import { useSelector } from "react-redux";
+import NameAbbreviator from "../../Utils/NameAbbreviator";
+import profileColors from "../../Constants/profileConstants";
 
 const NavbarLatest = ({ tabs }: { tabs: any }) => {
     const navigate = useNavigate();
     const { setIsOpen } = useContext(ModalContext);
+    const { user } = useSelector((state: any) => state.authSlice);
+    const fullName = user && user?.name && user?.name;
+    const email = user && user?.email && user?.email;
     const [hovered, setHovered] = useState(false);
     const [focused, setFocused] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
@@ -135,7 +141,9 @@ const NavbarLatest = ({ tabs }: { tabs: any }) => {
                     customButtClasses=" hover:bg-[#37393f] bg-none outline-none"
                 >
                     <div className="pb-6">
-                        <button className="text-start hover:bg-[#37393f] p-4" onClick={() => setIsOpen(true)}>
+                        <button className="text-start hover:bg-[#37393f] p-4" onClick={(e: any) => {
+                            setIsOpen(true)
+                        }}>
                             <h4 className="font-normal text-[#cad1df] text-md flex items-center gap-3"><span><GroupOutlinedIcon /></span> Create Workspace</h4>
                             <p className="text-[#aab5ca] font-normal text-sm pt-1">A Workspace is a group of boards and people. Use it to organize your company, side hustle, family, or friends.</p>
                         </button>
@@ -143,7 +151,7 @@ const NavbarLatest = ({ tabs }: { tabs: any }) => {
                             <p className="text-[#aab5ca] font-medium text-md mt-3 mb-5">Guest Workspaces</p>
                             <div className=" flex flex-col gap-5">
                                 {
-                                    workobs?.map((works: any , ind:number) => {
+                                    workobs?.map((works: any, ind: number) => {
                                         return (
                                             <div className="flex gap-4 items-center" key={ind}>
                                                 <div className="w-14 h-14 flex justify-center items-center bg-slate-600 rounded-md text-3xl font-medium">{works?.workName.charAt(0)}</div>
@@ -220,15 +228,15 @@ const NavbarLatest = ({ tabs }: { tabs: any }) => {
                 </MenuDropDown>
                 {/* <HelpOutlineIcon className="text-[#aab5ca]" /> */}
                 <MenuDropDown
-                    toggleIcon={<p className="bg-[blue] text-[11px] font-bold w-6 h-6 flex justify-center items-center rounded-full">D</p>}
+                    toggleIcon={<p className=" text-[11px] font-bold w-6 h-6 flex justify-center items-center rounded-full" style={{ backgroundColor: profileColors[NameAbbreviator(fullName) && NameAbbreviator(fullName)[0]?.charAt(0) ].bg, color: profileColors[].tx }}>{NameAbbreviator(fullName)}</p>}
                     mainRootStyles={{ maxHeight: "80vh", width: "300px" }}
                 >
                     <div className="">
                         <div className="flex items-center gap-3 border-b-[1px] border-b-[#58595a] pb-4">
-                            <p className="bg-[blue] text-[11px] font-bold w-10 h-10 flex justify-center items-center rounded-full">D</p>
+                            <p className=" text-[15px] font-bold w-10 h-10 flex justify-center items-center rounded-full" style={{ backgroundColor: profileColors.bg, color: profileColors[].tx }}>{NameAbbreviator(fullName)}</p>
                             <div className="">
-                                <p className="text-[#aab5ca] text-md font-medium">Test User</p>
-                                <p className="text-[#80858f] font-medium text-[13px]">example@gmail.com</p>
+                                <p className="text-[#aab5ca] text-md font-medium">{fullName}</p>
+                                <p className="text-[#80858f] font-medium text-[13px]">{email}</p>
                             </div>
                         </div>
                         <div className="mt-3">

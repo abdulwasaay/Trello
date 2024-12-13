@@ -1,7 +1,8 @@
 import { styled, alpha } from '@mui/material/styles';
 import Menu, { MenuProps } from '@mui/material/Menu';
 
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
+import { ModalContext } from '../../Contexts/ModalContext';
 
 type MenuDropDownProps = {
     mainRootStyles?: any;
@@ -13,6 +14,7 @@ type MenuDropDownProps = {
     cancelFunction?: (e: () => void) => void;
     customButtStyles?: any;
     customButtClasses?: string;
+    onCustomClose?: () => void;
 }
 
 const MenuDropDown = ({
@@ -84,12 +86,20 @@ const MenuDropDown = ({
             }),
         },
     }));
-
+    const { isOpen } = useContext(ModalContext);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
+
+    useEffect(() => {
+        console.log("ds")
+        if (isOpen) {
+            handleClose()
+        }
+    }, [isOpen])
+
     const handleClose = () => {
         setAnchorEl(null);
     };

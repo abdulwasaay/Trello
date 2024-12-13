@@ -93,18 +93,15 @@ const EachList = ({
             >
                 <div
                     className={`bg-[#2e2e2e] p-2 rounded-md  draggable ${dragIndex === ids ? "dragging" : ""}`}
-                    draggable
                     style={{ position: "relative", zIndex: "3" }}
-                    onDragStart={(event) => dragStartHandler(event, ids)}
-                    onDragEnd={dragEndHandler}
                 >
-                    <input type="text"
-                        draggable={false}
+                    <input
+                        type="text"
                         placeholder=""
                         value={items?.name}
                         readOnly={!isEditable}
                         className="w-full text-[#aab5ca] text-md font-medium pl-4 pr-4 pt-2 pb-2 bg-[#6e6edd]"
-                        onFocus={() => setIsEditable(true)}
+                        onClick={() => setIsEditable(true)}
                         onBlur={() => setIsEditable(false)}
                         onChange={handleInputChange}
                         style={{
@@ -112,8 +109,27 @@ const EachList = ({
                             backgroundColor: isEditable ? "#35373b" : "#2e2e2e",
                             borderRadius: "10px",
                             border: isEditable ? "1px solid #6e6edd" : "none",
-                            outline: "none"
+                            outline: "none",
                         }}
+                        draggable={!isEditable} // Make input field draggable
+                        onDragStart={(event: any) => {
+                            if (!isEditable) {
+                                dragStartHandler(event, ids); // Call your dragStartHandler
+                                const dragElement = event.currentTarget.closest("div") as HTMLElement;
+
+                                if (dragElement) {
+                                    const rect = dragElement.getBoundingClientRect();
+
+                                    // Calculate cursor position within the element
+                                    const offsetX = event.clientX - rect.left;
+                                    const offsetY = event.clientY - rect.top;
+
+                                    // Set the drag image using calculated offsets
+                                    event.dataTransfer.setDragImage(dragElement, offsetX, offsetY);
+                                }
+                            }
+                        }}
+                        onDragEnd={dragEndHandler} // Call your dragEndHandler
                     />
                     {
                         isAddCard ? (

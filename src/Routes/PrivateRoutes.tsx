@@ -16,7 +16,7 @@ const ProtectedRoutes = ({ children, isAuth, hideNav, navArr }: { children: any,
     }, [isAuth])
 
     return <div className="w-full h-full">
-        {!hideNav && <NavbarLatest tabs={navArr}/>}
+        {!hideNav && <NavbarLatest tabs={navArr} />}
         <WorkSpaceModal />
         <div className=" w-full h-full" >
             {children}

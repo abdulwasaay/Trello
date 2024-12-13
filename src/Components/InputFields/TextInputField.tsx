@@ -23,7 +23,7 @@ const TextInputField = forwardRef(({ classes = "", formik = {}, handleFocus=null
                 required={required}
                 disabled={disabled}
             />
-            {touched && errors && <p className=" text-md mt-1 text-red-300 font-semibold tracking-wider">{errors}</p>}
+            {touched && errors && <p className=" text-sm mt-1 text-red-300 font-semibold tracking-wider">{errors}</p>}
         </div>
     )
 

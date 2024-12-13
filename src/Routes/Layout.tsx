@@ -5,33 +5,40 @@ import NotFound from "../Components/ErrorPages/NotFound";
 import Auth from "../Pages/auth/Auth";
 // import { useEffect } from "react"
 import LogoutIcon from '@mui/icons-material/Logout';
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import GetCookieValue from "../Utils/getCookieHandler";
+import authCookie from "../Constants/cookieName";
+import { setAuth } from "../Redux/Slices/authSlice";
+import { persistor } from "../Redux/store";
+import DeleteCookieValue from "../Utils/DeleteCookieHandler";
 
 const RoutesLayout = () => {
-    const isAuth = true;
-    // const dispatch = useDispatch();
-    // const { isAuth } = useSelector((state: any) => state.authSlice);
+    const { isAuth } = useSelector((state: any) => state.authSlice);
+    const dispatch = useDispatch();
 
-    // useEffect(() => {
+    useEffect(() => {
 
-    //     const token = GetCookieValue(authCookie);
-    //     if (token) {
-    //         dispatch(setAuth(true))
-    //     } else {
-    //         dispatch(setAuth(false))
-    //         persistor.purge()
-    //     }
-    // }, [])
+        const token = GetCookieValue(authCookie);
+        if (token) {
+            dispatch(setAuth(true))
+        } else {
+            dispatch(setAuth(false))
+            persistor.purge()
+        }
+    }, [])
 
-    // const logoutHandler = () => {
-    //     DeleteCookieValue("token")
-    //     window.location.reload()
-    // }
+    const logoutHandler = () => {
+        DeleteCookieValue(authCookie);
+        persistor.purge();
+        window.location.reload();
+    }
 
 
 
 
     const navbarArr = [
-        { name: "Log out", link: false, clickFunc: () => console.log("s"), icon: <LogoutIcon className="text-[#d9e2f3]" style={{ fontSize: "20px" }} /> },
+        { name: "Log out", link: false, clickFunc: logoutHandler, icon: <LogoutIcon className="text-[#d9e2f3]" style={{ fontSize: "20px" }} /> },
     ]
 
 

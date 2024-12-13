@@ -6,6 +6,8 @@ import App from './App.tsx'
 import { Provider } from 'react-redux'
 import store, { persistor } from './Redux/store.ts'
 import ModalContextProvider from './Contexts/ModalContext.tsx'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -13,6 +15,7 @@ createRoot(document.getElementById('root')!).render(
       <PersistGate persistor={persistor}>
         <ModalContextProvider>
           <App />
+          <ToastContainer />
         </ModalContextProvider>
       </PersistGate>
     </Provider>
