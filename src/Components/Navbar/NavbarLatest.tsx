@@ -20,6 +20,7 @@ const NavbarLatest = ({ tabs }: { tabs: any }) => {
     const { setIsOpen } = useContext(ModalContext);
     const { user } = useSelector((state: any) => state.authSlice);
     const fullName = user && user?.name && user?.name;
+    console.log(fullName?.charAt(0), 'ch')
     const email = user && user?.email && user?.email;
     const [hovered, setHovered] = useState(false);
     const [focused, setFocused] = useState(false);
@@ -228,12 +229,12 @@ const NavbarLatest = ({ tabs }: { tabs: any }) => {
                 </MenuDropDown>
                 {/* <HelpOutlineIcon className="text-[#aab5ca]" /> */}
                 <MenuDropDown
-                    toggleIcon={<p className=" text-[11px] font-bold w-6 h-6 flex justify-center items-center rounded-full" style={{ backgroundColor: profileColors[NameAbbreviator(fullName) && NameAbbreviator(fullName)[0]?.charAt(0) ].bg, color: profileColors[].tx }}>{NameAbbreviator(fullName)}</p>}
+                    toggleIcon={<p className=" text-[11px] font-bold w-6 h-6 flex justify-center items-center rounded-full" style={{ backgroundColor: fullName && profileColors[fullName?.charAt(0)].bg, color: fullName && profileColors[fullName?.charAt(0)].tx }}>{NameAbbreviator(fullName)}</p>}
                     mainRootStyles={{ maxHeight: "80vh", width: "300px" }}
                 >
                     <div className="">
                         <div className="flex items-center gap-3 border-b-[1px] border-b-[#58595a] pb-4">
-                            <p className=" text-[15px] font-bold w-10 h-10 flex justify-center items-center rounded-full" style={{ backgroundColor: profileColors.bg, color: profileColors[].tx }}>{NameAbbreviator(fullName)}</p>
+                            <p className=" text-[15px] font-bold w-10 h-10 flex justify-center items-center rounded-full" style={{ backgroundColor: fullName && profileColors[fullName?.charAt(0)].bg, color: fullName && profileColors[fullName?.charAt(0)].tx }}>{NameAbbreviator(fullName)}</p>
                             <div className="">
                                 <p className="text-[#aab5ca] text-md font-medium">{fullName}</p>
                                 <p className="text-[#80858f] font-medium text-[13px]">{email}</p>

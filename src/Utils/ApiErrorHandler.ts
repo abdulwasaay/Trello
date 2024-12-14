@@ -1,8 +1,9 @@
-const ApiErrorHandler = (response: any , data:any) => {
+const ApiErrorHandler = (response: any, data: any) => {
     const status = response?.status;
     if (status >= 500) {
         return "Something went Wrong"
-    } else {
+    }
+    else {
         return data?.error
     }
 }

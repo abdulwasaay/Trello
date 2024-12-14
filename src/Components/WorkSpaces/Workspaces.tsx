@@ -7,6 +7,16 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useContext } from 'react';
 import { ModalContext } from '../../Contexts/ModalContext';
 import { basename } from '../../config/env';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import TextBox from '../InputFields/TextBox';
+import { useDispatch, useSelector } from 'react-redux';
+import AddWorkSpace from '../../Redux/Actions/Middlewares/WorkSpaces/AddWorkSpace';
+import { toast } from 'react-toastify';
+import { sessionModalContext } from '../../Contexts/SessionErrContext';
+import apiErrors from '../../Constants/apiErrors';
+import DeleteCookieValue from '../../Utils/DeleteCookieHandler';
+import authCookie from '../../Constants/cookieName';
 
 const style = {
     position: 'absolute',
@@ -19,12 +29,64 @@ const style = {
     display: "flex",
 };
 
+const workspaceSchema: any = Yup.object().shape({
+    name: Yup.string().max(100, "Name is too long"),
+    descript: Yup.string().max(500, "Description is too long"),
+});
+
 export default function WorkSpaceModal() {
     const { isOpen, setIsOpen } = useContext(ModalContext);
+    const dispatch: any = useDispatch();
+    const { isLoading } = useSelector((state: any) => state.addWorkSpaceSlice)
+    const { setSessionIsOpen, setErrText } = useContext(sessionModalContext);
+
+
+    const workspaceFormik = useFormik({
+        enableReinitialize: true,
+        initialValues: {
+            name: "",
+            descript: ""
+        },
+        onSubmit(values) {
+            const formData = new FormData();
+            formData.append("name", values?.name);
+            formData.append("description", values?.descript);
+
+            const onWorkspaceSuccess = (data: any) => {
+                toast.success(data?.message);
+            }
+
+            const onAddWorkspaceFail = (message: string, response: any) => {
+                if (response?.status === 401) {
+                    if (message && message === apiErrors?.authErr) {
+                        setErrText(message);
+                        setSessionIsOpen(true)
+                    } else {
+                        DeleteCookieValue(authCookie);
+                        window.location.reload();
+                    }
+                } else {
+                    toast.error(message)
+                }
+            }
+
+            dispatch(AddWorkSpace({ formData, onWorkspaceSuccess, onAddWorkspaceFail }))
+        },
+        validationSchema: workspaceSchema
+    })
 
     const onCloseHandler = () => {
         setIsOpen(false)
+        workspaceFormik.resetForm();
     }
+
+    const addWorkSpace = (e: any) => {
+        e.preventDefault();
+        workspaceFormik.submitForm();
+    }
+
+    const currentValue: any = workspaceFormik?.values && workspaceFormik?.values["name"] === "" || workspaceFormik?.values["descript"] === "";
+    const isdisabledButton = currentValue ? true : false;
 
     return (
         <div>
@@ -43,7 +105,7 @@ export default function WorkSpaceModal() {
                             Boost your productivity by making it easier for everyone to access
                             boards in one location.
                         </p>
-                        <form>
+                        <form onSubmit={addWorkSpace}>
                             <div className="mb-4">
                                 <label
                                     htmlFor="workspaceName"
@@ -51,7 +113,7 @@ export default function WorkSpaceModal() {
                                 >
                                     Workspace name
                                 </label>
-                                <TextInputField types="text" name="search" placeHolder="Taco's Co." classes="bg-[#292b30] text-[#aab5ca] font-medium placeholder:text-[#aab5ca] placeholder:opacity-60 placeholder:font-normal  pt-6 pb-6 mt-1 mb-1" styles={{ paddingLeft: "10px", border: `1px solid #aab5ca`, outline: "none", borderRadius: "5px" }} />
+                                <TextInputField types="text" name="name" maxLen={101} placeHolder="Taco's Co." formik={workspaceFormik} classes="bg-[#292b30] text-[#aab5ca] font-medium placeholder:text-[#aab5ca] placeholder:opacity-60 placeholder:font-normal  pt-6 pb-6 mt-1 mb-1" styles={{ paddingLeft: "10px", border: `1px solid #aab5ca`, outline: "none", borderRadius: "5px" }} />
                                 <label
                                     htmlFor="workspaceName"
                                     className="block text-[11px] font-medium text-[#aab5ca]"
@@ -60,7 +122,7 @@ export default function WorkSpaceModal() {
                                 </label>
                             </div>
 
-                            <div className="mb-4">
+                            {/* <div className="mb-4">
                                 <label
                                     htmlFor="workspaceType"
                                     className="block text-sm font-medium text-[#aab5ca]"
@@ -84,22 +146,24 @@ export default function WorkSpaceModal() {
                                     <option value="Marketing">Marketing</option>
                                     <option value="Other">Other</option>
                                 </select>
-                            </div>
+                            </div> */}
 
                             <div className="mb-6">
                                 <label
                                     htmlFor="workspaceDescription"
                                     className="block text-sm font-medium text-[#aab5ca]"
                                 >
-                                    Workspace description (Optional)
+                                    Workspace description
                                 </label>
-                                <textarea
-                                    id="workspaceDescription"
-                                    rows={3}
-                                    className=" resize-none outline-none mt-1 block w-full h-[17vh] px-[10px]  py-[7px] bg-[#292b30] font-medium text-[#aab5ca] placeholder:text-[#aab5ca] placeholder:opacity-60 placeholder:font-normal focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                    placeholder="Our team organizes everything here."
-                                    style={{ borderRadius: "5px", border: `1px solid #aab5ca` }}
-                                ></textarea>
+                                <TextBox
+                                    ids="workspaceDescription"
+                                    placeHolder="Our team organizes everything here."
+                                    styles={{ borderRadius: "5px", border: `1px solid #aab5ca` }}
+                                    classes="mt-1 block bg-[#292b30] "
+                                    name="descript"
+                                    formik={workspaceFormik}
+                                    maxLen={501}
+                                />
 
                                 <label
                                     htmlFor="workspaceDescription"
@@ -109,12 +173,12 @@ export default function WorkSpaceModal() {
                                 </label>
                             </div>
 
-                            <CustomButton text={"Continue"} disable={true} onButtonClick={() => console.log("dsd")} styles={{ width: "100%", paddingTop: "10px", paddingBottom: "10px", backgroundColor: "#424447" }} />
+                            <CustomButton types={"submit"} text={"Continue"} loadings={isLoading} disable={isdisabledButton} onButtonClick={() => console.log("dsd")} styles={{ width: "100%", paddingTop: "10px", paddingBottom: "10px", backgroundColor: "#424447" }} />
                         </form>
                     </div>
                     <div className='bg-blue-100 w-[50%] relative flex items-center justify-center'>
                         <img src={`${basename}assets/images/3dworkspace.png`} alt="3dworkspace" className='w-full' />
-                        <button className=' absolute top-3 right-3' onClick={onCloseHandler}><CloseIcon className=' text-[#aab5ca] cursor-pointer' /></button>
+                        <button type='button' className=' absolute top-3 right-3' onClick={onCloseHandler}><CloseIcon className=' text-[#aab5ca] cursor-pointer' /></button>
                     </div>
 
                 </Box>

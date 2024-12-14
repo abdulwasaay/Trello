@@ -1,7 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-// import ApiErrors from "../../../Utils/ApiErrorHandler";
-// import loginErrConst from "../../../constants/lloginErrorConst";
 import { loginAPi } from "../../../config/env";
 import ApiErrorHandler from "../../../Utils/ApiErrorHandler";
 
@@ -16,7 +14,7 @@ const onLogin = createAsyncThunk(
             })
             const data = await response.json();
             if (!response.ok) {
-                const errMessage = ApiErrorHandler(response , data)
+                const errMessage = ApiErrorHandler(response, data)
                 onFail(errMessage)
             } else {
                 onLoginSuccess(data)

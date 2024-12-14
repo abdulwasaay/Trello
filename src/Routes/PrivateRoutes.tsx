@@ -5,6 +5,7 @@ import { useNavigate } from "react-router"
 import routeLinks from "./RouteLinks"
 import NavbarLatest from "../Components/Navbar/NavbarLatest"
 import WorkSpaceModal from "../Components/WorkSpaces/Workspaces"
+import ErrorModal from "../Components/ErrorPages/AuthErrorModal"
 
 const ProtectedRoutes = ({ children, isAuth, hideNav, navArr }: { children: any, isAuth: boolean, hideNav: boolean, navArr: any }) => {
     console.log(navArr)
@@ -18,6 +19,7 @@ const ProtectedRoutes = ({ children, isAuth, hideNav, navArr }: { children: any,
     return <div className="w-full h-full">
         {!hideNav && <NavbarLatest tabs={navArr} />}
         <WorkSpaceModal />
+        <ErrorModal />
         <div className=" w-full h-full" >
             {children}
         </div>
