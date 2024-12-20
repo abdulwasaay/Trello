@@ -1,67 +1,77 @@
 import BoardImagesComp from './BoardImagesComp';
-import { basename } from '../../config/env';
 import { ModalContext } from '../../Contexts/ModalContext';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
+import { useSelector } from 'react-redux';
+import CustomLoader from '../CustomLoadingComps/CustomLoader';
+import adminUserCheck from '../../Constants/allConstants';
+import CustomButton from '../CustomButtonComp/CustomButton';
+import AddIcon from '@mui/icons-material/Add';
+import AddBoardManage from './AddBoardManage';
 
 const BoardsInner = () => {
     const { setIsOpen } = useContext(ModalContext);
+    const { user } = useSelector((state: any) => state.authSlice);
+    // const role = user && user?.role;
+    const role = "admin";
+    const isAdmin = role === adminUserCheck?.isAdmin;
+    const { workSpaces } = useSelector((state: any) => state.workspaceSlice);
+    const { isLoading } = useSelector((state: any) => state.getWorkSpaceSlice);
 
-    const arr = [
-        {
-            name: "WDS-Design",
-            url: `${basename}assets/images/trelloDummy.png`
-        },
-        {
-            name: "WDS-Developmentdsadsaadssdasdsdsadsdsdsdasadsdasdsadsadsdasda",
-            url: `${basename}assets/images/trelloDummy.png`
-        },
-        {
-            name: "Web-Design",
-            url: `${basename}assets/images/trelloDummy.png`
-        }
-    ]
-
-    const arrTwo = [
-        {
-            name: "WDS-Design",
-            url: `${basename}assets/images/trelloDummy.png`
-        }
-    ]
+    if (isLoading) {
+        return (
+            <CustomLoader />
+        )
+    }
 
     return (
-        <div className="w-[910px] mt-4">
+        <div className="w-[910px] mt-4 pb-3 ml-[270px]">
             <div>
-                <h1 className='text-[#aab5ca] text-xl font-bold mt-6'>YOUR WORKSPACES</h1>
-                <div className=' flex mt-5'>
-                    <p className='text-[#aab5ca]  text-sm'>You aren't a member of any workspaces yet. </p>
-                    <button onClick={() => setIsOpen(true)} className='text-[#7070eb] font-medium ml-2 text-sm'>Create a workspace</button>
-                </div>
-                <div className='flex items-center gap-2 ml-1 mt-6'><h1 className='text-[#aab5ca] text-xl font-bold '>GUEST WORKSPACES</h1><InfoOutlinedIcon style={{ color: "#aab5ca" }} /></div>
-                <div className='flex items-center gap-2 ml-1 mt-5'><GroupOutlinedIcon style={{ color: "#aab5ca" }} /> <h1 className='text-[#cdd6e7] text-lg font-medium'>Production workspace</h1></div>
-                <div className='flex gap-5 mt-4'>
-                    {
-                        arr.map((ele: any, ind: number) => {
-                            return (
-                                <BoardImagesComp key={ind} elements={ele} />
+                <div className='flex items-center gap-2 ml-1 '><h1 className='text-[#aab5ca] text-xl font-bold '>WORKSPACES</h1><InfoOutlinedIcon style={{ color: "#aab5ca" }} /></div>
+                {
+                    workSpaces && !workSpaces.length ?
+                        (
+                            < div className=' flex mt-5' >
+                                <p className='text-[#aab5ca]  text-sm'>You aren't a member of any workspaces yet. </p>
+                                {isAdmin && < button onClick={() => setIsOpen(true)} className='text-[#7070eb] font-medium ml-2 text-sm'>Create a workspace</button>}
+                            </div >
+                        ) : (
+                            workSpaces?.map((work: any, ind: number) =>
+                            (
+                                <div key={ind} className='mb-14'>
+                                    <div className='flex items-center gap-2 ml-1 mt-5'><GroupOutlinedIcon style={{ color: "#aab5ca" }} /> <h1 className='text-[#cdd6e7] text-lg font-medium'>{work?.name}</h1></div>
+                                    <div className='flex gap-5 flex-wrap mt-4'>
+                                        {
+                                            work?.boards && !work?.boards.length ? (
+                                                < div className=' flex' >
+                                                    {
+                                                        isAdmin ? (
+                                                            <div>
+                                                                <p className='text-[#aab5ca]  text-sm'>You aren't a member of any boards yet. </p>
+                                                                <AddBoardManage workId={work?.workSpace_Id} />
+                                                            </div>
+                                                        ) : (
+                                                            <p className='text-[#aab5ca]  text-sm'>You aren't a member of any boards yet. </p>
+                                                        )
+                                                    }
+                                                </div >
+                                            ) : (
+                                                work?.boards?.map((ele: any, ind: number) => {
+                                                    return (
+                                                        <BoardImagesComp key={ind} elements={ele} />
+                                                    )
+                                                })
+                                            )
+                                        }
+                                    </div>
+                                </div>
                             )
-                        })
-                    }
-                </div>
-                <div className='flex items-center gap-2 ml-1 mt-14'><GroupOutlinedIcon style={{ color: "#aab5ca" }} /> <h1 className='text-[#cdd6e7] text-lg font-medium'>Pulse Digital
-                </h1></div>
-                <div className='flex gap-5 mt-4'>
-                    {
-                        arrTwo.map((ele: any, ind: number) => {
-                            return (
-                                <BoardImagesComp key={ind} elements={ele} />
                             )
-                        })
-                    }
-                </div>
+                        )
+                }
             </div>
-        </div>
+        </div >
     )
 }
 

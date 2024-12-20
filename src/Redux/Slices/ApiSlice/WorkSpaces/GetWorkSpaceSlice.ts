@@ -1,18 +1,14 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import getWorkSpace from "../../../Actions/Middlewares/WorkSpaces/GetWorkSpace";
 
 const getWorksState: any = {
     isLoading: false,
-    workSpaces: []
 }
 
 const getWorkSpaceSlice = createSlice({
     name: "getWorkSpace",
     initialState: getWorksState,
     reducers: {
-        setWorkSpaces: (state: any, action: PayloadAction) => {
-            state.workSpaces = action.payload
-        }
     },
     extraReducers(builder) {
         builder
@@ -29,4 +25,4 @@ const getWorkSpaceSlice = createSlice({
     },
 })
 
-export default getWorkSpaceSlice.reducer
+export default getWorkSpaceSlice.reducer;

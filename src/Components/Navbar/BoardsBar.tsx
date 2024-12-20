@@ -8,6 +8,8 @@ import HomeIcon from '@mui/icons-material/Home';
 import "./NavStyle.css"
 import { useContext } from "react";
 import { ModalContext } from "../../Contexts/ModalContext";
+import { useSelector } from "react-redux";
+import adminUserCheck from "../../Constants/allConstants";
 
 
 // hover and Default
@@ -21,9 +23,12 @@ import { ModalContext } from "../../Contexts/ModalContext";
 
 const BoardsBar = () => {
     const { setIsOpen } = useContext(ModalContext);
+    const { user } = useSelector((state: any) => state.authSlice);
+    const role = user && user?.role;
+    const isAdmin = role === adminUserCheck?.isAdmin;
 
     return (
-        <div className="">
+        <div className=" fixed">
             <div className=" ">
                 <div className="flex flex-col text-[#363636]">
                     <div className=" flex flex-col gap-3 border-b-[1px] border-b-[#8c8d8f] pb-4">
@@ -40,8 +45,9 @@ const BoardsBar = () => {
                             </div>
                         </NavLink>
                     </div>
-                    <p className="mt-5 text-[#aab5ca] text-[13px] pl-4 font-medium">Workspaces</p>
-                    <CustomButton text="+ Create a Workspace" isCustomHover onButtonClick={() => setIsOpen(true)} styles={{ background: "none", color: "#aab5ca", fontSize: "13px", paddingLeft: "15px", justifyContent: "left", textTransform: "none", marginTop: "10px", boxShadow: "none" }} />
+                    {
+                        isAdmin && <CustomButton text="+ Create a Workspace" isCustomHover onButtonClick={() => setIsOpen(true)} styles={{ background: "none", color: "#aab5ca", fontSize: "13px", paddingLeft: "15px", justifyContent: "left", textTransform: "none", marginTop: "20px", boxShadow: "none" }} />
+                    }
                 </div>
             </div>
         </div>

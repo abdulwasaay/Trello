@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+import { basename } from "../../config/env";
 
 interface ErrorBoundaryProps {
     children: ReactNode;
@@ -27,7 +28,19 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     render() {
         if (this.state.hasError) {
             // Render your custom fallback UI.
-            return <h1>Something went wrong. Please try again later.</h1>;
+            return (
+                <div className="w-full h-screen flex items-center justify-center">
+                    <div className="w-[700px] text-center">
+                        <img src={`${basename}assets/images/errorImg.png`} alt="errorImg" className="mx-auto" />
+                        <h1 className="text-5xl font-medium mt-6 text-[#c9cfda]">
+                            Oops! Something went wrong
+                        </h1>
+                        <p className="mt-4 text-2xl font-normal text-[#aab5ca]">Brace yourself till we get the error fixed.</p>
+                        <p className="text-2xl font-normal text-[#aab5ca]">You may also refresh the page or try again later.</p>
+                    </div>
+                </div>
+
+            )
         }
 
         return this.props.children;

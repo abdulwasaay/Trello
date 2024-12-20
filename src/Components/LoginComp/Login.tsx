@@ -14,7 +14,6 @@ interface loginComponentProps {
 
 const LoginComp: React.FC<loginComponentProps> = ({ submitHandler }) => {
     const { isLoading } = useSelector((state: any) => state.loginSlice);
-    console.log(isLoading)
 
     const eyeVisibilityRef = useRef<any>(null);
 
@@ -22,26 +21,6 @@ const LoginComp: React.FC<loginComponentProps> = ({ submitHandler }) => {
         e.preventDefault();
         const typeReturned = HidePassHandler(eyeVisibilityRef?.current?.type);
         eyeVisibilityRef.current.type = typeReturned;
-    }
-
-    const providerArr = [
-        { url: `${basename}assets/images/googleIco.png`, alt: "googleIco", name: "Google" },
-        { url: `${basename}assets/images/microsoftico.png`, alt: "microsoft", name: "Microsoft" },
-        { url: `${basename}assets/images/appleIco.png`, alt: "appleIco", name: "Apple" },
-        { url: `${basename}assets/images/slack.png`, alt: "slack", name: "Slack" },
-    ]
-
-    const customLoginStyles = {
-        background: "none",
-        boxShadow: "none",
-        border: "1px solid rgb(193, 199, 208)",
-        borderRadius: "3px",
-        color: "black",
-        width: "100%",
-        fontSize: "15px",
-        fontWeight: "600",
-        paddingTop: "10px",
-        paddingBottom: "10px",
     }
 
     const loginSchema: any = Yup.object().shape({

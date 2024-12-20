@@ -3,4 +3,4 @@ export const basename = "/";
 
 // Api Base URLS
 
-export const loginAPi: any = import.meta.env.VITE_API_BASE_URL
+export const APiBaseUrl: any = import.meta.env.VITE_API_BASE_URL

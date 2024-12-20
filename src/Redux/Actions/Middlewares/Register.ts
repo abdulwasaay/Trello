@@ -3,21 +3,21 @@ import { toast } from "react-toastify";
 import { APiBaseUrl } from "../../../config/env";
 import ApiErrorHandler from "../../../Utils/ApiErrorHandler";
 
-const onLogin = createAsyncThunk(
-    "LOGIN_API",
-    async ({ formData, onLoginSuccess, onFail }: any, { rejectWithValue }) => {
+const onRegister = createAsyncThunk(
+    "REGISTER_API",
+    async ({ formData, onRegisterSuccess, onRegisterFail }: any, { rejectWithValue }) => {
 
         try {
-            const response = await fetch(`${APiBaseUrl}/project2/api/users/login.php`, {
+            const response = await fetch(`${APiBaseUrl}/project2/api/users/register.php`, {
                 method: "POST",
                 body: formData,
             })
             const data = await response.json();
             if (!response.ok) {
                 const errMessage = ApiErrorHandler(response, data)
-                onFail(errMessage)
+                onRegisterFail(errMessage)
             } else {
-                onLoginSuccess(data)
+                onRegisterSuccess(data)
             }
         } catch (err: any) {
             if (err.message === 'Failed to fetch') {
@@ -33,4 +33,4 @@ const onLogin = createAsyncThunk(
     }
 )
 
-export default onLogin
+export default onRegister

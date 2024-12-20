@@ -9,9 +9,10 @@ interface ButtonProps {
     loadings?: Boolean;
     types?: any;
     onButtonClick: (e?: any) => void;
+    customDisabledStyles?: any;
 }
 
-const CustomButton: React.FC<ButtonProps> = ({ isCustomHover = false, disable = false, text, types = 'button', styles = {}, loadings = false, onButtonClick }) => {
+const CustomButton: React.FC<ButtonProps> = ({ isCustomHover = false, customDisabledStyles = {}, disable = false, text, types = 'button', styles = {}, loadings = false, onButtonClick }) => {
 
     const loading: any = loadings;
 
@@ -28,7 +29,8 @@ const CustomButton: React.FC<ButtonProps> = ({ isCustomHover = false, disable = 
                 "&.Mui-disabled": {
                     background: loading ? "" : "#424447",
                     color: loading ? "" : "white",
-                    opacity: loading ? "" : "0.4"
+                    opacity: loading ? "" : "0.4",
+                    ...customDisabledStyles
                 }
             }}
         >

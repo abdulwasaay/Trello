@@ -10,6 +10,11 @@ const persistConfig = {
     storage,
     blacklist: [
         "loginSlice",
+        "addWorkSpaceSlice",
+        "getWorkSpaceSlice",
+        "registerSlice",
+        "addBoardSlice",
+        "getBoardSlice"
     ]
 };
 

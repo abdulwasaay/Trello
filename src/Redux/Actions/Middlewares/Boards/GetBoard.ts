@@ -4,25 +4,25 @@ import { APiBaseUrl } from "../../../../config/env";
 import ApiErrorHandler from "../../../../Utils/ApiErrorHandler";
 import GetCookieValue from "../../../../Utils/getCookieHandler";
 import authCookie from "../../../../Constants/cookieName";
-const addWorkSpace = createAsyncThunk(
-    "ADDWORKSPACE_API",
-    async ({ formData, onWorkspaceSuccess, onAddWorkspaceFail }: any, { rejectWithValue }) => {
+
+const getBoard = createAsyncThunk(
+    "GETBOARD_API",
+    async ({ workSpaceId, onGetBoardSuccess, onGetBoardFail }: any, { rejectWithValue }) => {
 
         try {
             const token = GetCookieValue(authCookie);
-            const response = await fetch(`${APiBaseUrl}/project2/api/workspaces/add.php`, {
-                method: "POST",
+            const response = await fetch(`${APiBaseUrl}/project2/api/boards/list.php?workspace_id=${workSpaceId}`, {
+                method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`
-                },
-                body: formData,
+                }
             })
             const data = await response.json();
             if (!response.ok) {
                 const errMessage = ApiErrorHandler(response, data)
-                onAddWorkspaceFail(errMessage, response)
+                onGetBoardFail(errMessage, response)
             } else {
-                onWorkspaceSuccess(data)
+                onGetBoardSuccess(data)
             }
         } catch (err: any) {
             if (err.message === 'Failed to fetch') {
@@ -34,8 +34,7 @@ const addWorkSpace = createAsyncThunk(
             return rejectWithValue(err)
         }
 
-
     }
 )
 
-export default addWorkSpace
+export default getBoard

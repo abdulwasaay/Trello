@@ -13,10 +13,12 @@ import TextBox from '../InputFields/TextBox';
 import { useDispatch, useSelector } from 'react-redux';
 import AddWorkSpace from '../../Redux/Actions/Middlewares/WorkSpaces/AddWorkSpace';
 import { toast } from 'react-toastify';
-import { sessionModalContext } from '../../Contexts/SessionErrContext';
-import apiErrors from '../../Constants/apiErrors';
+import getWorkSpace from '../../Redux/Actions/Middlewares/WorkSpaces/GetWorkSpace';
 import DeleteCookieValue from '../../Utils/DeleteCookieHandler';
 import authCookie from '../../Constants/cookieName';
+import { sessionModalContext } from '../../Contexts/SessionErrContext';
+import apiErrors from '../../Constants/apiErrors';
+import { setWorkSpaces } from '../../Redux/Slices/workSpaces';
 
 const style = {
     position: 'absolute',
@@ -40,6 +42,29 @@ export default function WorkSpaceModal() {
     const { isLoading } = useSelector((state: any) => state.addWorkSpaceSlice)
     const { setSessionIsOpen, setErrText } = useContext(sessionModalContext);
 
+    const getWorkSpaces = () => {
+        const onGetWorkspaceSuccess = (data: any) => {
+            dispatch(setWorkSpaces(data))
+        }
+
+        const onGetWorkspaceFail = (message: string, response: any) => {
+            if (response?.status === 401) {
+                console.log("getWorkp auth err" )
+                if (message && message === apiErrors?.authErr) {
+                    setErrText(message);
+                    setSessionIsOpen(true)
+                } else {
+                    DeleteCookieValue(authCookie);
+                    window.location.reload();
+                }
+            } else {
+                toast.error(message)
+            }
+        }
+
+        dispatch(getWorkSpace({ onGetWorkspaceSuccess, onGetWorkspaceFail }))
+    }
+
 
     const workspaceFormik = useFormik({
         enableReinitialize: true,
@@ -53,11 +78,15 @@ export default function WorkSpaceModal() {
             formData.append("description", values?.descript);
 
             const onWorkspaceSuccess = (data: any) => {
+                workspaceFormik.resetForm();
+                setIsOpen(false);
+                getWorkSpaces();
                 toast.success(data?.message);
             }
 
             const onAddWorkspaceFail = (message: string, response: any) => {
                 if (response?.status === 401) {
+                    console.log("addWorkp auth err" )
                     if (message && message === apiErrors?.authErr) {
                         setErrText(message);
                         setSessionIsOpen(true)

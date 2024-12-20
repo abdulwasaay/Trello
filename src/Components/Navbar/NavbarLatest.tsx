@@ -14,17 +14,21 @@ import { ModalContext } from "../../Contexts/ModalContext";
 import { useSelector } from "react-redux";
 import NameAbbreviator from "../../Utils/NameAbbreviator";
 import profileColors from "../../Constants/profileConstants";
+import adminUserCheck from "../../Constants/allConstants";
+import Register from "../RegisterComp/Register";
 
 const NavbarLatest = ({ tabs }: { tabs: any }) => {
     const navigate = useNavigate();
     const { setIsOpen } = useContext(ModalContext);
     const { user } = useSelector((state: any) => state.authSlice);
+    const { workSpaces } = useSelector((state: any) => state.workspaceSlice);
     const fullName = user && user?.name && user?.name;
-    console.log(fullName?.charAt(0), 'ch')
     const email = user && user?.email && user?.email;
     const [hovered, setHovered] = useState(false);
     const [focused, setFocused] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+    const role = user && user?.role;
+    const isAdmin = role === adminUserCheck?.isAdmin;
     const [availBoards, setAvailableBoards] = useState([
         { title: "WDS-Development", description: "Production Workspace", mainHeading: "" },
         { title: "WDS-Design", description: "Design Workspace" },
@@ -54,6 +58,7 @@ const NavbarLatest = ({ tabs }: { tabs: any }) => {
 
     const imgSource = hovered ? "https://trello.com/assets/87e1af770a49ce8e84e3.gif" : "https://trello.com/assets/d947df93bc055849898e.gif";
 
+
     const handleFocusHandler = () => {
         setFocused(true);
     };
@@ -75,7 +80,7 @@ const NavbarLatest = ({ tabs }: { tabs: any }) => {
             return (
                 <div
                     key={index}
-                    className="flex items-center gap-3 pt-2 pb-2 pl-5 pr-2 hover:bg-[#3c3c47] cursor-pointer border-b-[1px] border-b-[#8c8d8f]"
+                    className="flex items-center gap-3 pt-2 pb-2 pl-5 pr-2 hover:bg-[#3c3c47] cursor-pointer "
                 >
                     <img
                         src={`${basename}assets/images/loginscreen1.PNG`}
@@ -101,20 +106,26 @@ const NavbarLatest = ({ tabs }: { tabs: any }) => {
         })).filter((section: any) => section?.arr?.length > 0);
         return filteredData?.map((data: any, ind: number) => {
             return (
-                <div key={ind}>
+                <div key={ind} style={{marginTop: "10px"}}>
                     <p className="text-sm font-normal mb-2 text-[#aab5ca] ml-5">{data?.mainTitle.toUpperCase()}</p>
                     {
                         data?.arr?.map((results: any, ind: number) => {
                             return (
                                 <div
                                     key={ind}
-                                    className="flex items-center gap-3 pt-2 pb-2 pl-5 pr-2 hover:bg-[#3c3c47] cursor-pointer border-b-[1px] border-b-[#8c8d8f]"
+                                    className="flex items-center gap-3 pt-2 pb-2 pl-5 pr-2 hover:bg-[#3c3c47] cursor-pointer "
                                 >
-                                    <img
-                                        src={`${basename}assets/images/loginscreen1.PNG`}
-                                        alt="loginscreen1"
-                                        className="w-8 h-8 opacity-60 rounded-sm"
-                                    />
+                                    {
+                                        data?.mainTitle.toLowerCase() === "cards" ? (
+                                            <WebIcon />
+                                        ) : (
+                                            <img
+                                                src={`${basename}assets/images/loginscreen1.PNG`}
+                                                alt="loginscreen1"
+                                                className="w-8 h-8 opacity-60 rounded-sm"
+                                            />
+                                        )
+                                    }
                                     <div>
                                         <h3 className="font-medium text-[#cad1df]">{results?.title}</h3>
                                         <p className="text-sm text-[#aab5ca]">{results?.description}</p>
@@ -135,28 +146,31 @@ const NavbarLatest = ({ tabs }: { tabs: any }) => {
                 <img src={imgSource} alt="imgsource" className="w-[80px] opacity-60 cursor-pointer" onMouseEnter={() => setHovered(true)}
                     onMouseLeave={() => setHovered(false)} onClick={() => navigate("/")} />
                 <MenuDropDown
-                    mainRootStyles={{ maxHeight: "51vh", width: "300px" }}
+                    mainRootStyles={{ maxHeight: "51vh", width: "360px" }}
                     listStyles={{ padding: "0" }}
                     toggleIcon={<span className="flex items-center gap-1">Workspaces <KeyboardArrowDownIcon /></span>}
                     customButtStyles={{ fontWeight: "500", color: "#aab5ca", borderRadius: "3px", padding: "5px 10px" }}
                     customButtClasses=" hover:bg-[#37393f] bg-none outline-none"
                 >
                     <div className="pb-6">
-                        <button className="text-start hover:bg-[#37393f] p-4" onClick={(e: any) => {
-                            setIsOpen(true)
-                        }}>
-                            <h4 className="font-normal text-[#cad1df] text-md flex items-center gap-3"><span><GroupOutlinedIcon /></span> Create Workspace</h4>
-                            <p className="text-[#aab5ca] font-normal text-sm pt-1">A Workspace is a group of boards and people. Use it to organize your company, side hustle, family, or friends.</p>
-                        </button>
+                        {
+                            isAdmin && <button className="text-start hover:bg-[#37393f] p-4" onClick={(e: any) => {
+                                setIsOpen(true)
+                            }}>
+                                <h4 className="font-normal text-[#cad1df] text-md flex items-center gap-3"><span><GroupOutlinedIcon /></span> Create Workspace</h4>
+                                <p className="text-[#aab5ca] font-normal text-sm pt-1">A Workspace is a group of boards and people. Use it to organize your company, side hustle, family, or friends.</p>
+                            </button>
+                        }
+
                         <div className="pl-4 pr-4">
-                            <p className="text-[#aab5ca] font-medium text-md mt-3 mb-5">Guest Workspaces</p>
+                            <p className="text-[#aab5ca] font-medium text-md mt-3 mb-5">Workspaces</p>
                             <div className=" flex flex-col gap-5">
                                 {
-                                    workobs?.map((works: any, ind: number) => {
+                                    workSpaces?.map((works: any, ind: number) => {
                                         return (
                                             <div className="flex gap-4 items-center" key={ind}>
-                                                <div className="w-14 h-14 flex justify-center items-center bg-slate-600 rounded-md text-3xl font-medium">{works?.workName.charAt(0)}</div>
-                                                <p className="text-[#aab5ca] text-md font-medium">{works?.workName}</p>
+                                                <div className="w-14 h-14 flex justify-center items-center bg-slate-600 rounded-md text-3xl font-medium">{works?.name.charAt(0)}</div>
+                                                <p className="text-[#aab5ca] text-md font-medium">{works?.name}</p>
                                             </div>
                                         )
                                     })
@@ -165,14 +179,28 @@ const NavbarLatest = ({ tabs }: { tabs: any }) => {
                         </div>
                     </div>
                 </MenuDropDown>
-                <MenuDropDown
-                    mainRootStyles={{ maxHeight: "67vh", width: "350px" }}
-                    listStyles={{ paddingTop: "10px", paddingBottom: "10px" }}
-                    toggleIcon={"Create"}
-                    customButtStyles={{ fontWeight: "500", color: "white", backgroundColor: "#3f51b5", borderRadius: "3px", padding: "5px 10px", zIndex: "3", position: "relative" }}
-                >
-                    <CreateBoardLatest />
-                </MenuDropDown>
+                {
+                    isAdmin ? <MenuDropDown
+                        mainRootStyles={{ maxHeight: "67vh", width: "350px" }}
+                        listStyles={{ paddingTop: "10px", paddingBottom: "10px" }}
+                        toggleIcon={"Create"}
+                        customButtStyles={{ fontWeight: "500", color: "white", backgroundColor: "#3f51b5", borderRadius: "3px", padding: "5px 10px", zIndex: "3", position: "relative" }}
+                    >
+                        <CreateBoardLatest />
+                    </MenuDropDown>
+                        : <div></div>
+                }
+                {
+                    isAdmin ? <MenuDropDown
+                        mainRootStyles={{ maxHeight: "67vh", width: "350px" }}
+                        listStyles={{ paddingTop: "10px", paddingBottom: "10px" }}
+                        toggleIcon={"Add User"}
+                        customButtStyles={{ whiteSpace: "nowrap", fontWeight: "500", color: "white", backgroundColor: "#3f51b5", borderRadius: "3px", padding: "5px 10px", zIndex: "3", position: "relative" }}
+                    >
+                        <Register />
+                    </MenuDropDown>
+                        : <div></div>
+                }
             </div>
             <div className="flex items-center justify-end gap-3 w-full">
                 <InputWithDropdown

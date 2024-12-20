@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { loginAPi } from "../../../../config/env";
+import { APiBaseUrl } from "../../../../config/env";
 import ApiErrorHandler from "../../../../Utils/ApiErrorHandler";
 import GetCookieValue from "../../../../Utils/getCookieHandler";
 import authCookie from "../../../../Constants/cookieName";
@@ -11,7 +11,7 @@ const getWorkSpace = createAsyncThunk(
 
         try {
             const token = GetCookieValue(authCookie);
-            const response = await fetch(`${loginAPi}/project2/api/workspaces/list.php`, {
+            const response = await fetch(`${APiBaseUrl}/project2/api/workspaces/workspace_card.php`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -33,7 +33,6 @@ const getWorkSpace = createAsyncThunk(
             }
             return rejectWithValue(err)
         }
-
 
     }
 )
