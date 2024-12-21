@@ -5,4 +5,6 @@ const adminUserCheck = {
     isUser: "member"
 }
 
+export const ws_color = "#7979eb";
+
 export default adminUserCheck

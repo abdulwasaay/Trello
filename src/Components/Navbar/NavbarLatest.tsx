@@ -106,7 +106,7 @@ const NavbarLatest = ({ tabs }: { tabs: any }) => {
         })).filter((section: any) => section?.arr?.length > 0);
         return filteredData?.map((data: any, ind: number) => {
             return (
-                <div key={ind} style={{marginTop: "10px"}}>
+                <div key={ind} style={{ marginTop: "10px" }}>
                     <p className="text-sm font-normal mb-2 text-[#aab5ca] ml-5">{data?.mainTitle.toUpperCase()}</p>
                     {
                         data?.arr?.map((results: any, ind: number) => {
@@ -167,11 +167,14 @@ const NavbarLatest = ({ tabs }: { tabs: any }) => {
                             <div className=" flex flex-col gap-5">
                                 {
                                     workSpaces?.map((works: any, ind: number) => {
+                                        const formattedTitle = works?.boards[0]?.name.replace(/\s+/g, '-');
                                         return (
-                                            <div className="flex gap-4 items-center" key={ind}>
-                                                <div className="w-14 h-14 flex justify-center items-center bg-slate-600 rounded-md text-3xl font-medium">{works?.name.charAt(0)}</div>
-                                                <p className="text-[#aab5ca] text-md font-medium">{works?.name}</p>
-                                            </div>
+                                            <Link key={ind} to={`/boards/${works?.workSpace_Id}/${works?.boards[0]?.id}/${formattedTitle}`}>
+                                                <div className="flex gap-4 items-center" key={ind}>
+                                                    <div className="w-14 h-14 flex justify-center items-center bg-slate-600 rounded-md text-3xl font-medium">{works?.name.charAt(0)}</div>
+                                                    <p className="text-[#aab5ca] text-md font-medium">{works?.name}</p>
+                                                </div>
+                                            </Link>
                                         )
                                     })
                                 }

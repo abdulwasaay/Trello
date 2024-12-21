@@ -1,20 +1,18 @@
 import BoardImagesComp from './BoardImagesComp';
 import { ModalContext } from '../../Contexts/ModalContext';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import { useSelector } from 'react-redux';
 import CustomLoader from '../CustomLoadingComps/CustomLoader';
 import adminUserCheck from '../../Constants/allConstants';
-import CustomButton from '../CustomButtonComp/CustomButton';
-import AddIcon from '@mui/icons-material/Add';
 import AddBoardManage from './AddBoardManage';
+import { Link } from 'react-router';
 
 const BoardsInner = () => {
     const { setIsOpen } = useContext(ModalContext);
     const { user } = useSelector((state: any) => state.authSlice);
-    // const role = user && user?.role;
-    const role = "admin";
+    const role = user && user?.role;
     const isAdmin = role === adminUserCheck?.isAdmin;
     const { workSpaces } = useSelector((state: any) => state.workspaceSlice);
     const { isLoading } = useSelector((state: any) => state.getWorkSpaceSlice);
@@ -58,8 +56,12 @@ const BoardsInner = () => {
                                                 </div >
                                             ) : (
                                                 work?.boards?.map((ele: any, ind: number) => {
+                                                    const formattedTitle = ele?.name.replace(/\s+/g, '-');
+
                                                     return (
-                                                        <BoardImagesComp key={ind} elements={ele} />
+                                                        <Link to={`/boards/${work?.workSpace_Id}/${ele?.id}/${formattedTitle}`} key={ind}>
+                                                            <BoardImagesComp key={ind} elements={ele} />
+                                                        </Link>
                                                     )
                                                 })
                                             )

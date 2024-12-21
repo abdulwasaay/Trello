@@ -87,7 +87,7 @@ const EachList = ({
             <div
                 key={ids}
                 style={{ position: "relative", zIndex: "1" }}
-                className="w-[300px] min-w-[300px] overflow-auto flex-shrink-0 pl-4"
+                className="w-[300px] min-w-[300px] overflow-y-auto overflow-x-hidden flex-shrink-0 pl-4"
                 onDragOver={(event) => dragOverHandler(event, ids)}
                 onDrop={(event) => dropHandler(event, ids)}
             >

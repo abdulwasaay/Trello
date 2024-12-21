@@ -40,7 +40,7 @@ const CreateBoardLatest = () => {
                     setSessionIsOpen(true)
                 } else {
                     DeleteCookieValue(authCookie);
-                    window.location.reload();
+                    // window.location.reload();
                 }
             } else {
                 toast.error(message)
@@ -80,7 +80,7 @@ const CreateBoardLatest = () => {
                         setSessionIsOpen(true)
                     } else {
                         DeleteCookieValue(authCookie);
-                        window.location.reload();
+                        // window.location.reload();
                     }
                 } else {
                     toast.error(message)

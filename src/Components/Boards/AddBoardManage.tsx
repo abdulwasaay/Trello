@@ -39,7 +39,6 @@ const AddBoardManage: React.FC<addBoardProps> = ({ workId }) => {
 
         const onGetWorkspaceFail = (message: string, response: any) => {
             if (response?.status === 401) {
-                console.log("getWorkp auth err")
                 if (message && message === apiErrors?.authErr) {
                     setErrText(message);
                     setSessionIsOpen(true)
@@ -89,11 +88,12 @@ const AddBoardManage: React.FC<addBoardProps> = ({ workId }) => {
         return (
             <div className='w-[230px] h-32 bg-[#64748b] pl-2 pr-2 pt-1'>
                 <div className=' w-full flex justify-end'><button type='button' onClick={() => setAddButtonText("button")}><CloseIcon style={{ textAlign: "right" }} /></button></div>
-                <form action="" className='mt-2' onSubmit={addBoardHandler}>
+                <form className='mt-2' onSubmit={addBoardHandler}>
                     <input required type='text' placeholder='Enter Board title' onChange={(e: any) => setTextInput(e.target.value)} className='w-full border-none outline-none p-1 pl-2 font-medium rounded-sm' maxLength={50} />
                     <CustomButton types={"submit"}
                         text={"Add Board"}
-                        onButtonClick={addBoardHandler}
+                        loadings={isLoading}
+                        onButtonClick={()=> console.log("DS")}
                         styles={{ width: "100%", marginTop: "10px", backgroundColor: "gray" }}
                     />
                 </form>
