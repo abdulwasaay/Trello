@@ -1,13 +1,16 @@
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import { Tooltip } from '@mui/material';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { NavLink } from 'react-router';
 import { ws_color } from '../../Constants/allConstants';
+import { WorkSpaceObjContext } from '../../Contexts/WorkSpaceData';
 
-const SideBarLatest = ({ workSpaceObj }: any) => {
+const SideBarLatest = () => {
     const [isClose, setIsClose] = useState<boolean>(false);
     const [hiddenStyle, setHiddenStyle] = useState<string>("block");
     const [hiddenStyleButton, setHiddenStyleButton] = useState<string>("none");
+    const { workSpaceObjs } = useContext(WorkSpaceObjContext);
+    const workSpaceObj = workSpaceObjs && workSpaceObjs;
 
     const sideBartransition = (close: boolean) => {
         setIsClose(close)
@@ -45,7 +48,9 @@ const SideBarLatest = ({ workSpaceObj }: any) => {
                                     <NavLink to={`/boards/${workSpaceObj?.workSpace_Id}/${board?.id}/${formattedTitle}`}>
                                         <div key={ind} className='flex items-center gap-3 cursor-pointer hover:bg-[#515164] pl-4 pr-4 pt-2 pb-2'>
                                             <div className=' w-9 h-6 opacity-80 rounded-sm' style={{ backgroundColor: ws_color }}></div>
-                                            <p className="text-[#aab5ca] text-md font-medium w-[17ch] overflow-hidden whitespace-nowrap text-ellipsis">{board?.name}</p>
+                                            <Tooltip title={board?.name}>
+                                                <p className="text-[#aab5ca] text-md font-medium w-[17ch] overflow-hidden whitespace-nowrap text-ellipsis">{board?.name}</p>
+                                            </Tooltip>
                                         </div>
                                     </NavLink>
                                 )

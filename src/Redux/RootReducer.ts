@@ -7,6 +7,9 @@ import addWorkSpaceSlice from "./Slices/ApiSlice/WorkSpaces/AddWorkSpaceSlice"
 import getWorkSpaceSlice from "./Slices/ApiSlice/WorkSpaces/GetWorkSpaceSlice"
 import addBoardSlice from "./Slices/ApiSlice/Boards/AddBoardSlice"
 import getBoardSlice from "./Slices/ApiSlice/Boards/GetBoardSlice"
+import addListsSlice from "./Slices/ApiSlice/Lists/AddListSlice"
+import getListsSlice from "./Slices/ApiSlice/Lists/GetListSlice"
+import listsSlice from "./Slices/Lists"
 
 const rootReducer = combineReducers({
     loginSlice,
@@ -16,7 +19,10 @@ const rootReducer = combineReducers({
     workspaceSlice,
     registerSlice,
     addBoardSlice,
-    getBoardSlice
+    getBoardSlice,
+    addListsSlice,
+    getListsSlice,
+    listsSlice
 })
 
 export default rootReducer    

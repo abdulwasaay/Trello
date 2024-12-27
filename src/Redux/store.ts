@@ -14,7 +14,9 @@ const persistConfig = {
         "getWorkSpaceSlice",
         "registerSlice",
         "addBoardSlice",
-        "getBoardSlice"
+        "getBoardSlice",
+        "addListsSlice",
+        "getListsSlice"
     ]
 };
 

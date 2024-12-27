@@ -1,30 +1,43 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import "./AllBoardStyles.css";
 import EachList from "./EachList";
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import CustomButton from "../../CustomButtonComp/CustomButton";
+import { WorkSpaceObjContext } from "../../../Contexts/WorkSpaceData";
+import { useDispatch, useSelector } from "react-redux";
+import addList from "../../../Redux/Actions/Middlewares/Lists/AddLists";
+import apiErrors from "../../../Constants/apiErrors";
+import { toast } from "react-toastify";
+import DeleteCookieValue from "../../../Utils/DeleteCookieHandler";
+import authCookie from "../../../Constants/cookieName";
+import { sessionModalContext } from "../../../Contexts/SessionErrContext";
+import adminUserCheck from "../../../Constants/allConstants";
+import { setListsData } from "../../../Redux/Slices/Lists";
+import getLists from "../../../Redux/Actions/Middlewares/Lists/GetLists";
 
 const BoardsListsLatest = () => {
+    const { lists } = useSelector((state: any) => state.listsSlice);
     const [taskLists, setTaskLists] = useState([
-        { name: "Initial Mock" },
-        { name: "Priority" },
-        { name: "Initial Mock2" },
-        { name: "Priority3" },
-        { name: "Priority4" },
-        { name: "Initial Mock5" },
-        { name: "Priority6" },
-        { name: "Priority7" },
-        { name: "Initial Mock8" },
-        { name: "Priority9" },
     ]);
 
+    useEffect(() => {
+        setTaskLists(lists)
+    }, [lists])
+
+    const { user } = useSelector((state: any) => state.authSlice);
     const [isMakeList, setIsMakeList] = useState<boolean>(false);
     const [listInput, setListInput] = useState<string>("");
     const addListRef: any = useRef(null);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
+    const { boardObjs } = useContext(WorkSpaceObjContext);
+    const dispatch: any = useDispatch();
+    const { setSessionIsOpen, setErrText } = useContext(sessionModalContext);
+    const role = user && user?.role;
+    const isAdmin = role === adminUserCheck?.isAdmin;
+    const { isAddListsLoading } = useSelector((state: any) => state.addListsSlice);
 
     useEffect(() => {
         document.addEventListener("mouseup", closeListMenu);
@@ -37,6 +50,27 @@ const BoardsListsLatest = () => {
             textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // Adjust height based on content
         }
     }, [listInput]);
+
+    const GetLists = (boardId: any) => {
+
+        const onGetListsSuccess = (data: any) => {
+            dispatch(setListsData(data))
+        }
+
+        const onGetListsFail = (message: string, response: any) => {
+            if (response?.status === 401) {
+                if (message && message === apiErrors?.authErr) {
+                    setErrText(message);
+                    setSessionIsOpen(true)
+                } else {
+                    DeleteCookieValue(authCookie);
+                    window.location.reload();
+                }
+            }
+        }
+
+        dispatch(getLists({ boardId, onGetListsSuccess, onGetListsFail }))
+    }
 
     const closeListMenu = (e: any) => {
         if (addListRef.current && !addListRef.current.contains(e.target)) {
@@ -83,7 +117,7 @@ const BoardsListsLatest = () => {
     };
 
     const updateTaskList = (index: number, name: string) => {
-        const updatedTaskLists = [...taskLists];
+        const updatedTaskLists:any = [...taskLists];
         updatedTaskLists[index].name = name;
         setTaskLists(updatedTaskLists);
     };
@@ -91,8 +125,32 @@ const BoardsListsLatest = () => {
     const addListHandler = (e: any) => {
         e.preventDefault();
         if (listInput.length > 0) {
-            setTaskLists([...taskLists, { name: listInput }]);
-            setListInput("");
+            const formData = new FormData();
+            formData.append("board_id", boardObjs && boardObjs?.id);
+            formData.append("name", listInput)
+
+            const onAddListsSuccess = (data: any) => {
+                // setTaskLists([...taskLists, { name: listInput }]);
+                GetLists(boardObjs && boardObjs?.id)
+                setListInput("");
+                toast.success(data?.message);
+            }
+
+            const onAddListsFail = (message: string, response: any) => {
+                if (response?.status === 401) {
+                    if (message && message === apiErrors?.authErr) {
+                        setErrText(message);
+                        setSessionIsOpen(true)
+                    } else {
+                        DeleteCookieValue(authCookie);
+                        window.location.reload();
+                    }
+                } else {
+                    toast.error(message)
+                }
+            }
+
+            dispatch(addList({ formData, onAddListsSuccess, onAddListsFail }))
         }
     }
 
@@ -110,7 +168,7 @@ const BoardsListsLatest = () => {
                     />
                     {/* <input type="text" placeholder="Enter list name..." value={listInput} className="w-full h-[32.5px] bg-[#616161] rounded-md border-[1px] border-[#aab5ca] pl-2 text-[#aab5ca] font-medium text-sm placeholder:text-[#aab5ca] outline-none" onChange={(e: any) => setListInput(e.target.value)} /> */}
                     <div className="mt-2 flex gap-1">
-                        <CustomButton text={"Add list"} onButtonClick={addListHandler} />
+                        <CustomButton text={"Add list"} onButtonClick={addListHandler} customDisabledStyles={{ backgroundColor: "#616161" }} loadings={isAddListsLoading} />
                         <button onClick={() => setIsMakeList(false)} className=" hover:bg-[#616161] pl-2 pr-2 rounded-md"><CloseIcon style={{ color: "#aab5ca" }} /></button>
                     </div>
                 </div>
@@ -134,15 +192,20 @@ const BoardsListsLatest = () => {
                         updateTaskList={updateTaskList} // Pass the function
                     />
                 ))}
-                {isMakeList ? (
-                    addListUI()
-                ) : (
-                    <div className="pl-4 w-[300px] pr-4">
-                        <div
-                            className="w-[250px] min-w-[250px] border rounded-md"
-                        ><CustomButton text={<span className=" flex gap-1 items-center "><AddIcon style={{ fontSize: "19px", marginTop: "-1px" }} /> Add another List</span>} styles={{ width: "100%", backgroundColor: "#ffffff3d", boxShadow: "none", color: "#FFFFFF" }} onButtonClick={() => setIsMakeList(true)} /></div>
-                    </div>
-                )}
+                {
+                    isAdmin ? (
+                        isMakeList ? (
+                            addListUI()
+                        ) : (<div className="pl-4 w-[300px] pr-4">
+                            <div
+                                className="w-[250px] min-w-[250px] border rounded-md"
+                            ><CustomButton text={<span className=" flex gap-1 items-center "><AddIcon style={{ fontSize: "19px", marginTop: "-1px" }} /> Add another List</span>} styles={{ width: "100%", backgroundColor: "#ffffff3d", boxShadow: "none", color: "#FFFFFF" }} onButtonClick={() => setIsMakeList(true)} /></div>
+                        </div>
+                        )
+                    ) : (
+                        <div className="pr-4"></div>
+                    )
+                }
             </div>
         </div>
     );

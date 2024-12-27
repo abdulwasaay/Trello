@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import CustomButton from "../../CustomButtonComp/CustomButton"
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
+import adminUserCheck from "../../../Constants/allConstants";
+import { useSelector } from "react-redux";
 
 type EachListProps = {
     ids: number,
@@ -24,9 +26,12 @@ const EachList = ({
     updateTaskList, // New prop to update the taskLists state
 }: EachListProps & { updateTaskList: (index: number, name: string) => void }) => {
 
+    const { user } = useSelector((state: any) => state.authSlice);
     const [isEditable, setIsEditable] = useState<boolean>(false);
     const [isAddCard, setIsAddCard] = useState<boolean>(false);
     const [cardDescript, setCardDescript] = useState<string>("");
+    const role = user && user?.role;
+    const isAdmin = role === adminUserCheck?.isAdmin;
 
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -111,9 +116,9 @@ const EachList = ({
                             border: isEditable ? "1px solid #6e6edd" : "none",
                             outline: "none",
                         }}
-                        draggable={!isEditable} // Make input field draggable
+                        draggable={isAdmin && !isEditable} // Make input field draggable
                         onDragStart={(event: any) => {
-                            if (!isEditable) {
+                            if (isAdmin && !isEditable) {
                                 dragStartHandler(event, ids); // Call your dragStartHandler
                                 const dragElement = event.currentTarget.closest("div") as HTMLElement;
 
@@ -132,10 +137,12 @@ const EachList = ({
                         onDragEnd={dragEndHandler} // Call your dragEndHandler
                     />
                     {
-                        isAddCard ? (
-                            addCardUI()
-                        ) : (
-                            <CustomButton text={<span className=" flex gap-1 items-center "><AddIcon style={{ fontSize: "19px", marginTop: "-1px" }} /> Add a card</span>} styles={{ width: "100%", paddingLeft: "10px", background: "none", boxShadow: "none", marginTop: "5px", color: "#aab5ca", fontWeight: "bold", textTransform: "none", justifyContent: "left" }} isCustomHover onButtonClick={() => setIsAddCard(true)} />
+                        isAdmin && (
+                            isAddCard ? (
+                                addCardUI()
+                            ) : (
+                                <CustomButton text={<span className=" flex gap-1 items-center "><AddIcon style={{ fontSize: "19px", marginTop: "-1px" }} /> Add a card</span>} styles={{ width: "100%", paddingLeft: "10px", background: "none", boxShadow: "none", marginTop: "5px", color: "#aab5ca", fontWeight: "bold", textTransform: "none", justifyContent: "left" }} isCustomHover onButtonClick={() => setIsAddCard(true)} />
+                            )
                         )
                     }
                     {/* <button className="text-[#aab5ca] text-md font-medium pl-4 pr-4 pt-2 pb-2 border">sa</button> */}

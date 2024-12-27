@@ -9,6 +9,7 @@ import ModalContextProvider from './Contexts/ModalContext.tsx'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import SessionModalContextProvider from './Contexts/SessionErrContext.tsx'
+import WorkSpaceObjContextProvider, { WorkSpaceObjContext } from './Contexts/WorkSpaceData.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -16,7 +17,9 @@ createRoot(document.getElementById('root')!).render(
       <PersistGate persistor={persistor}>
         <SessionModalContextProvider>
           <ModalContextProvider>
-            <App />
+            <WorkSpaceObjContextProvider>
+              <App />
+            </WorkSpaceObjContextProvider>
             <ToastContainer />
           </ModalContextProvider>
         </SessionModalContextProvider>

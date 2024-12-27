@@ -7,7 +7,7 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <BrowserRouter>
+      <BrowserRouter >
         <RoutesLayout />
       </BrowserRouter>
     </ErrorBoundary>

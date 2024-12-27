@@ -49,7 +49,6 @@ export default function WorkSpaceModal() {
 
         const onGetWorkspaceFail = (message: string, response: any) => {
             if (response?.status === 401) {
-                console.log("getWorkp auth err" )
                 if (message && message === apiErrors?.authErr) {
                     setErrText(message);
                     setSessionIsOpen(true)
@@ -86,7 +85,7 @@ export default function WorkSpaceModal() {
 
             const onAddWorkspaceFail = (message: string, response: any) => {
                 if (response?.status === 401) {
-                    console.log("addWorkp auth err" )
+                    console.log("addWorkp auth err")
                     if (message && message === apiErrors?.authErr) {
                         setErrText(message);
                         setSessionIsOpen(true)

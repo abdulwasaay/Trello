@@ -29,11 +29,11 @@ const NavbarLatest = ({ tabs }: { tabs: any }) => {
     const [searchQuery, setSearchQuery] = useState("");
     const role = user && user?.role;
     const isAdmin = role === adminUserCheck?.isAdmin;
-    const [availBoards, setAvailableBoards] = useState([
+    const [availBoards] = useState([
         { title: "WDS-Development", description: "Production Workspace", mainHeading: "" },
         { title: "WDS-Design", description: "Design Workspace" },
     ])
-    const [searchResults, setSearchResults] = useState([
+    const [searchResults] = useState([
         {
             mainTitle: "Cards",
             arr: [
@@ -50,11 +50,6 @@ const NavbarLatest = ({ tabs }: { tabs: any }) => {
             ]
         }
     ]);
-
-    const workobs = [
-        { workName: "Production workspace" },
-        { workName: "Pulse Digital" },
-    ]
 
     const imgSource = hovered ? "https://trello.com/assets/87e1af770a49ce8e84e3.gif" : "https://trello.com/assets/d947df93bc055849898e.gif";
 
@@ -154,7 +149,7 @@ const NavbarLatest = ({ tabs }: { tabs: any }) => {
                 >
                     <div className="pb-6">
                         {
-                            isAdmin && <button className="text-start hover:bg-[#37393f] p-4" onClick={(e: any) => {
+                            isAdmin && <button className="text-start hover:bg-[#37393f] p-4" onClick={() => {
                                 setIsOpen(true)
                             }}>
                                 <h4 className="font-normal text-[#cad1df] text-md flex items-center gap-3"><span><GroupOutlinedIcon /></span> Create Workspace</h4>
