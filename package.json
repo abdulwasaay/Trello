@@ -1,5 +1,6 @@
 {
   "name": "trelloboards",
+  "homepage": "/trello/",
   "private": true,
   "version": "0.0.0",
   "type": "module",

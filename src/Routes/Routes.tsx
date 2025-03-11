@@ -1,3 +1,4 @@
+import AttendencePageLatest from "../Pages/AttendencePage";
 import BoardDynamicLayout from "../Pages/BoardDynamicLayout";
 import BoardLayout from "../Pages/BoardLayout";
 import HomeLayout from "../Pages/HomePage";
@@ -17,6 +18,11 @@ const privateRoutes = [
     {
         comp: BoardDynamicLayout,
         routeLink: routeLinks?.dynamicBoard,
+        isHideNav: false,
+    },
+    {
+        comp: AttendencePageLatest,
+        routeLink: routeLinks?.attendence,
         isHideNav: false,
     }
 ]

@@ -4,7 +4,8 @@ const routeLinks = {
     home: "/",
     boards: '/boards',
     dynamicBoard: "/boards/:id/:boardId/:name",
-    login: `/${auth}/login`
+    login: `/${auth}/login`,
+    attendence:"/attendence"
 }
 
 export default routeLinks

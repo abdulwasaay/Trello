@@ -16,7 +16,10 @@ const persistConfig = {
         "addBoardSlice",
         "getBoardSlice",
         "addListsSlice",
-        "getListsSlice"
+        "getListsSlice",
+        "addCardSlice",
+        "editListsSlice",
+        "moveListsSlice",
     ]
 };
 

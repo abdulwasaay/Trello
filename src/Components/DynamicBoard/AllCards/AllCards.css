@@ -1,0 +1,8 @@
+.draggableCard {
+    opacity: 1;
+}
+
+.draggableCard.draggingCard {
+    opacity: 0.5;
+    /* Optional to enhance the effect */
+}

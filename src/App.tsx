@@ -7,7 +7,7 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <BrowserRouter >
+      <BrowserRouter basename='trello'>
         <RoutesLayout />
       </BrowserRouter>
     </ErrorBoundary>

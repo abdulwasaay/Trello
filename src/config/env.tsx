@@ -1,5 +1,5 @@
 // export const basename = "trello-dm/";
-export const basename = "/";
+export const basename = "/trello/";
 
 // Api Base URLS
 

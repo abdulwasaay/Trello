@@ -15,6 +15,7 @@ import { sessionModalContext } from "../../../Contexts/SessionErrContext";
 import adminUserCheck from "../../../Constants/allConstants";
 import { setListsData } from "../../../Redux/Slices/Lists";
 import getLists from "../../../Redux/Actions/Middlewares/Lists/GetLists";
+import moveLists from "../../../Redux/Actions/Middlewares/Lists/move";
 
 const BoardsListsLatest = () => {
     const { lists } = useSelector((state: any) => state.listsSlice);
@@ -30,8 +31,8 @@ const BoardsListsLatest = () => {
     const [listInput, setListInput] = useState<string>("");
     const addListRef: any = useRef(null);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
-
     const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
+    const [apiData, setApiData] = useState<any>({});
     const { boardObjs } = useContext(WorkSpaceObjContext);
     const dispatch: any = useDispatch();
     const { setSessionIsOpen, setErrText } = useContext(sessionModalContext);
@@ -72,6 +73,34 @@ const BoardsListsLatest = () => {
         dispatch(getLists({ boardId, onGetListsSuccess, onGetListsFail }))
     }
 
+    const moveList = (listFrom: number, listTo: number) => {
+        const onMoveListSuccess = (_: any) => {
+            GetLists(boardObjs && boardObjs?.id)
+            setDraggingIndex(null); // Clear dragging state on drag end
+            setApiData({})
+        }
+
+        const onMoveListFail = (message: string, response: any) => {
+            setDraggingIndex(null); // Clear dragging state on drag end
+            setApiData({})
+            if (response?.status === 401) {
+                if (message && message === apiErrors?.authErr) {
+                    setErrText(message);
+                    setSessionIsOpen(true)
+                } else {
+                    DeleteCookieValue(authCookie);
+                    window.location.reload();
+                }
+            }
+        }
+        const payload = {
+            id: listFrom,
+            position: listTo,
+            board_id: boardObjs && boardObjs?.id
+        }
+        dispatch(moveLists({ payload, onMoveListSuccess, onMoveListFail }))
+    }
+
     const closeListMenu = (e: any) => {
         if (addListRef.current && !addListRef.current.contains(e.target)) {
             setIsMakeList(false)
@@ -80,14 +109,23 @@ const BoardsListsLatest = () => {
 
     const handleDragStart = (event: React.DragEvent<HTMLDivElement>, index: number) => {
         setDraggingIndex(index);
+        const listFrom = lists?.find((_: any, ind: number) => ind === index);
+        setApiData({
+            fromId: listFrom?.id,
+            ...apiData
+        })
         event.dataTransfer.effectAllowed = "move";
     };
 
     const handleDragOver = (event: React.DragEvent<HTMLDivElement>, targetIndex: number) => {
         event.preventDefault(); // Allow dropping
-
         // Move the dragged item automatically when over another list
         if (draggingIndex !== null && draggingIndex !== targetIndex) {
+            const listTo = lists?.find((_: any, index: number) => index === targetIndex);
+            setApiData({
+                ...apiData,
+                toId: listTo?.position
+            })
             const updatedTaskLists = [...taskLists];
             const [draggedItem] = updatedTaskLists.splice(draggingIndex, 1); // Remove dragged item
             updatedTaskLists.splice(targetIndex, 0, draggedItem); // Insert at target position
@@ -100,27 +138,38 @@ const BoardsListsLatest = () => {
         event.preventDefault();
 
         if (draggingIndex === null || draggingIndex === targetIndex) return;
-
         // Save the final new order when dropped
+        const listTo = lists?.find((_: any, index: number) => index === targetIndex);
+        setApiData({
+            ...apiData,
+            toId: listTo?.position
+        })
         const updatedTaskLists = [...taskLists];
         const [draggedItem] = updatedTaskLists.splice(draggingIndex, 1); // Remove dragged item
         updatedTaskLists.splice(targetIndex, 0, draggedItem); // Insert at target position
 
         setTaskLists(updatedTaskLists); // Save the state
-        setDraggingIndex(null); // Clear dragging state
-
+        // setDraggingIndex(null); // Clear dragging state
     };
 
     const handleDragEnd = () => {
-        setDraggingIndex(null); // Clear dragging state on drag end
-
+        if (!apiData.fromId || !apiData.toId) return setDraggingIndex(null)
+        if (apiData.fromId === apiData.toId) return setDraggingIndex(null)
+        moveList(apiData?.fromId, apiData.toId);
+        // const listFrom = lists?.find((_: any, index: number) => index === draggingIndex);
+        // const listTo = lists?.find((_: any, index: number) => index === targetIndex);
     };
 
-    const updateTaskList = (index: number, name: string) => {
-        const updatedTaskLists:any = [...taskLists];
-        updatedTaskLists[index].name = name;
-        setTaskLists(updatedTaskLists);
-    };
+    // const updateCards = (listId: number, draggedCardId: string, updatedCards: any) => {
+    //     const newLists: any = taskLists.map((list: any) => {
+    //         if (list.id === listId) {
+    //             return { ...list, cards: updatedCards }; // Update the specific list's cards
+    //         }
+    //         return list;
+    //     });
+
+    //     setTaskLists(newLists); // Set the new lists state
+    // };
 
     const addListHandler = (e: any) => {
         e.preventDefault();
@@ -179,7 +228,7 @@ const BoardsListsLatest = () => {
     return (
         <div className="h-full w-full pt-4 pb-4 overflow-x-auto flex-nowrap">
             <div className="flex h-full">
-                {taskLists.map((list, index) => (
+                {taskLists?.map((list, index) => (
                     <EachList
                         key={index}
                         ids={index}
@@ -188,8 +237,10 @@ const BoardsListsLatest = () => {
                         dragStartHandler={handleDragStart}
                         dragEndHandler={handleDragEnd}
                         items={list}
+                        taskList={taskLists}
+                        setTaskList={(updList: any) => setTaskLists(updList)}
                         dragIndex={draggingIndex}
-                        updateTaskList={updateTaskList} // Pass the function
+                    // updateCards={updateCards}
                     />
                 ))}
                 {

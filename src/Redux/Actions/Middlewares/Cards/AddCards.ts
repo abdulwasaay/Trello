@@ -1,17 +1,16 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { APiBaseUrl } from "../../../config/env";
-import ApiErrorHandler from "../../../Utils/ApiErrorHandler";
-import GetCookieValue from "../../../Utils/getCookieHandler";
-import authCookie from "../../../Constants/cookieName";
-
-const onRegister = createAsyncThunk(
-    "REGISTER_API",
-    async ({ formData, onRegisterSuccess, onRegisterFail }: any, { rejectWithValue }) => {
+import { APiBaseUrl } from "../../../../config/env";
+import ApiErrorHandler from "../../../../Utils/ApiErrorHandler";
+import GetCookieValue from "../../../../Utils/getCookieHandler";
+import authCookie from "../../../../Constants/cookieName";
+const addCard = createAsyncThunk(
+    "ADDCARDS_API",
+    async ({ formData, onAddCardsSuccess, onAddCardsFail }: any, { rejectWithValue }) => {
 
         try {
             const token = GetCookieValue(authCookie);
-            const response = await fetch(`${APiBaseUrl}/project2/api/users/register.php`, {
+            const response = await fetch(`${APiBaseUrl}/project2/api/cards/add.php`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -21,9 +20,9 @@ const onRegister = createAsyncThunk(
             const data = await response.json();
             if (!response.ok) {
                 const errMessage = ApiErrorHandler(response, data)
-                onRegisterFail(errMessage)
+                onAddCardsFail(errMessage, response)
             } else {
-                onRegisterSuccess(data)
+                onAddCardsSuccess(data)
             }
         } catch (err: any) {
             if (err.message === 'Failed to fetch') {
@@ -35,8 +34,7 @@ const onRegister = createAsyncThunk(
             return rejectWithValue(err)
         }
 
-
     }
 )
 
-export default onRegister
+export default addCard
